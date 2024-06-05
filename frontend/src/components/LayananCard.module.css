@@ -1,0 +1,29 @@
+.layananCard{
+    padding: 12px 8px;
+    box-sizing: border-box;
+    width: 280px;
+    border-radius: 16px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    margin-bottom: 12px;
+}
+.layananCard h4{
+    color: #1D204F;
+    margin-bottom: 6px;
+}
+.layananCard p{
+    color: #319C7A;
+    font-size: 0.8rem;
+}
+.imgContainer img{
+    width: 100%;
+}
+.purchaseButton{
+    display: flex;
+    justify-content: center;
+    margin-top: 0.6rem;
+}
+@media only screen and (min-width: 1024px) {
+    .layananCard{
+        width: 280px;
+    }
+}
