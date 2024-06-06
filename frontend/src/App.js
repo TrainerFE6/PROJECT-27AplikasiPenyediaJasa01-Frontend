@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from "./pages/LandingPage";
 import CatalogProduct from "./pages/CatalogProduct";
+import TestAPI from './pages/TestAPI'
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage/>}/>
           <Route path="/catalog" element={<CatalogProduct/>}/>
+          <Route path="/testapi" element={<TestAPI/>}/>
         </Routes>
       </div>
 
