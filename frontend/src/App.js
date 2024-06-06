@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from "./pages/LandingPage";
+import Login from "./LoginRegister/Login";
+import Signup from "./LoginRegister/Signup";
 import CatalogProduct from "./pages/CatalogProduct";
 import DashboardPage from "./DashboardPage";
 import TestAPI from './pages/TestAPI';
@@ -11,6 +13,7 @@ import Pesanan from "./Pesanan/Pesanan";
 import TambahLayanan from "./AddLayanan/AddLayanan";
 import TambahTeknisi from "./AddTeknisi/AddTeknisi";
 import './App.css';
+import LoginAdmin from "./LoginRegister/LoginAdmin";
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginadmin" element={<LoginAdmin />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/catalog" element={<CatalogProduct />} />
           <Route path="/testapi" element={<TestAPI />} />
           <Route path="/dashboard/*" element={<DashboardPage />}>

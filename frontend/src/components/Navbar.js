@@ -42,8 +42,8 @@ const Navbar = () => {
             </Link>
           </div>
           <div className={classes.navbarButton}>
-            <SecondaryButton>Register</SecondaryButton>
-            <PrimaryButton>Login</PrimaryButton>
+            <Link to="/signup"><SecondaryButton>Register</SecondaryButton></Link>
+            <Link to="/login"><PrimaryButton>Login</PrimaryButton></Link>
           </div>
           <div className={classes.toggleButton}>
             <button onClick={handleToggle}>

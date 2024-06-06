@@ -17,7 +17,7 @@ function Hero (){
                     </Link>
                     <div className={classes.daftar}>
                         {/* <a href="#">Daftar Sekarang</a> */}
-                        <Link to ="/">Daftar Sekarang</Link>
+                        <Link to ="/signup">Daftar Sekarang</Link>
                     </div>
 
                 </div>
