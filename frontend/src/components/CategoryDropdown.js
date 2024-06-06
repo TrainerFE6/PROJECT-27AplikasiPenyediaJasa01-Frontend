@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Dropdown from './Dropdown';
 
-function CategoryDropdown({onSelect}) {
-  const options = [
-    { label: 'Pembersihan AC', value: 'Pembersihan AC' },
-    { label: 'Service AC', value: 'Service AC' },
-    { label: 'Ganti Freon AC', value: 'Ganti Freon AC' },
-  ];
+function CategoryDropdown({ onSelect }) {
+  const [options, setOptions] = useState([]);
 
-  // const [selectedOption, setSelectedOption] = useState('');
+  useEffect(() => {
+    // Mengambil data dari API
+    axios.get('http://localhost:5000/kategori')
+      .then(response => {
+        // Mengubah data API menjadi format yang sesuai untuk Dropdown
+        const apiData = response.data.data.map(item => ({
+          label: item.nama_katagori,
+          value: item.nama_katagori
+        }));
+        setOptions(apiData);
+      })
+      .catch(error => {
+        console.error('Terjadi kesalahan saat mengambil data kategori:', error);
+      });
+  }, []);
 
   const handleSelect = (option) => {
-    // setSelectedOption(option);
     onSelect(option);
-    // Lakukan apapun yang Anda inginkan dengan opsi yang dipilih di sini
+    // Anda dapat melakukan logika lain yang diperlukan dengan pilihan yang dipilih di sini
   };
 
   return (

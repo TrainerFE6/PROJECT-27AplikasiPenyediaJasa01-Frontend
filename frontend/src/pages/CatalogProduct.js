@@ -1,81 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import LocationDropdown from '../components/LocationDropdown';
 import CategoryDropdown from '../components/CategoryDropdown';
 import classes from './CatalogProduct.module.css';
 import LayananCard from '../components/LayananCard';
-import ExampleLayanan from '../assets/ExampleLayanan.svg';
 
-const dataLayanan = [
-  {
-    category: "Service AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Service AC",
-    location: "Semarang",
-    price: 600000,
-  },
-  {
-    category: "Pembersihan AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Pembersihan AC",
-    location: "Jakarta",
-    price: 500000,
-  },
-  {
-    category: "Ganti Freon AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Ganti Freon AC",
-    location: "Surakarta",
-    price: 650000,
-  },
-  {
-    category: "Service AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Service AC",
-    location: "Jakarta",
-    price: 600000,
-  },
-  {
-    category: "Pembersihan AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Pembersihan AC",
-    location: "Surakarta",
-    price: 500000,
-  },
-  {
-    category: "Ganti Freon AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Ganti Freon AC",
-    location: "Jakarta",
-    price: 650000,
-  },
-  {
-    category: "Service AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Service AC",
-    location: "Surakarta",
-    price: 600000,
-  },
-  {
-    category: "Pembersihan AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Pembersihan AC",
-    location: "Semarang",
-    price: 500000,
-  },
-  {
-    category: "Ganti Freon AC",
-    imageLayanan: ExampleLayanan,
-    title: "Layanan Ganti Freon AC",
-    location: "Semarang",
-    price: 650000,
-  },
- 
-];
-
-function CatalogProduct() {
+const CatalogProduct = () => {
+  const [dataLayanan, setDataLayanan] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/kategori')
+      .then(response => {
+        setDataLayanan(response.data.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -87,10 +31,12 @@ function CatalogProduct() {
 
   const filteredLayanan = dataLayanan.filter((layanan) => {
     return (
-      (selectedCategory ? layanan.category === selectedCategory : true) &&
-      (selectedLocation ? layanan.location === selectedLocation : true)
+      (selectedCategory ? layanan.nama_katagori === selectedCategory : true) &&
+      (selectedLocation ? layanan.lokasi === selectedLocation : true)
     );
   });
+
+  const baseURL = 'http://localhost:5000'; // Base URL backend Anda
 
   return (
     <>
@@ -116,10 +62,10 @@ function CatalogProduct() {
           {filteredLayanan.map((layanan, index) => (
             <LayananCard
               key={index}
-              imageLayanan={layanan.imageLayanan}
-              title={layanan.title}
-              location={layanan.location}
-              price={layanan.price.toLocaleString('de-DE')}
+              imageLayanan={`${baseURL}/uploads/catagori/${layanan.gambar}`} // Menyusun URL lengkap gambar
+              title={layanan.judul}
+              location={layanan.lokasi}
+              price={parseInt(layanan.harga, 10).toLocaleString('de-DE')}
             />
           ))}
         </div>
