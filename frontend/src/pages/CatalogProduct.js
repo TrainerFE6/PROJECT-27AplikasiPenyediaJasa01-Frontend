@@ -59,10 +59,11 @@ const CatalogProduct = () => {
           <h4>Menampilkan Layanan {selectedCategory || 'Semua Kategori'} di {selectedLocation || 'Semua Lokasi'}</h4>
         </div>
         <div className={classes.containerResult}>
-          {filteredLayanan.map((layanan, index) => (
+          {filteredLayanan.map((layanan) => (
             <LayananCard
-              key={index}
-              imageLayanan={`${baseURL}/uploads/catagori/${layanan.gambar}`} // Menyusun URL lengkap gambar
+              key={layanan.id_katagori}
+              id={layanan.id_katagori}
+              imageLayanan={`${baseURL}/uploads/catagori/${layanan.gambar}`}
               title={layanan.judul}
               location={layanan.lokasi}
               price={parseInt(layanan.harga, 10).toLocaleString('de-DE')}

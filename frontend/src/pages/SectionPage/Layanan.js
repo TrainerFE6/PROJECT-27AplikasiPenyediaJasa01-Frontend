@@ -1,6 +1,6 @@
 import React from "react";
 import LayananCard from "../../components/LayananCard";
-import ExampleLayanan from "../../assets/ExampleLayanan.svg";
+import ExampleLayanan from "../../assets/ExampleLayanan.png";
 import { PrimaryButton } from "../../components/Button";
 import classes from "./Layanan.module.css";
 import { Link } from 'react-router-dom';

@@ -3,6 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 
+
 function Login() {
   return (
     <div className=' template d-flex justify-content-center align-items-center vh-100' style={{ backgroundColor: '#1D204F' }}>
@@ -18,7 +19,7 @@ function Login() {
                 <input type="password" placeholder='Masukan Password' className='form-control'/>
             </div>
             <div className='text- mt-2 mb-2 '>
-                Forget <a href="" className='text-decoration-none'>Password?</a> 
+                Forget <a href="/" className='text-decoration-none'>Password?</a> 
             </div>
             <div className='d-grid'>
                 <Link to="/" className='d-grid text-decoration-none'><button className='btn btn-primary'style={{ backgroundColor: '#1D204F' }}>Login</button></Link>

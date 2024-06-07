@@ -1,7 +1,7 @@
 import React from "react";
 import { PrimaryButton } from "../../components/Button";
 import classes from './Hero.module.css';
-import HeroImage from '../../assets/HeroImage.svg';
+import HeroImage from '../../assets/HeroImage.png';
 import { Link } from 'react-router-dom';
 
 function Hero (){

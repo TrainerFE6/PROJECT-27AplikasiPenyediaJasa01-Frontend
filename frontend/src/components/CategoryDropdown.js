@@ -9,10 +9,11 @@ function CategoryDropdown({ onSelect }) {
     // Mengambil data dari API
     axios.get('http://localhost:5000/kategori')
       .then(response => {
-        // Mengubah data API menjadi format yang sesuai untuk Dropdown
-        const apiData = response.data.data.map(item => ({
-          label: item.nama_katagori,
-          value: item.nama_katagori
+        // Mengubah data API menjadi format yang sesuai untuk Dropdown dan menghapus duplikasi
+        const uniqueCategories = Array.from(new Set(response.data.data.map(item => item.nama_katagori)));
+        const apiData = uniqueCategories.map(kategori => ({
+          label: kategori,
+          value: kategori
         }));
         setOptions(apiData);
       })

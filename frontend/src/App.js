@@ -12,7 +12,10 @@ import KelolaUser from "./AddUser/AddUser";
 import Pesanan from "./Pesanan/Pesanan";
 import TambahLayanan from "./AddLayanan/AddLayanan";
 import TambahTeknisi from "./AddTeknisi/AddTeknisi";
-import './App.css';
+
+import LayananDetail from './pages/LayananDetail'; // Halaman detail
+
+// import './App.css';
 import LoginAdmin from "./LoginRegister/LoginAdmin";
 
 function App() {
@@ -26,6 +29,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/catalog" element={<CatalogProduct />} />
           <Route path="/testapi" element={<TestAPI />} />
+          <Route path="/layanan/:id" element={<LayananDetail />} /> {/* Rute untuk halaman detail */}
           <Route path="/dashboard/*" element={<DashboardPage />}>
             <Route path="" element={<Dashboard />} />
             <Route path="about-us" element={<AboutUs />} />

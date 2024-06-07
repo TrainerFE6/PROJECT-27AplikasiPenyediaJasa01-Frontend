@@ -9,10 +9,11 @@ function LocationDropdown({ onSelect }) {
     // Mengambil data lokasi dari API
     axios.get('http://localhost:5000/kategori') // Gantilah URL ini sesuai dengan endpoint API lokasi Anda
       .then(response => {
-        // Mengubah data API menjadi format yang sesuai untuk Dropdown
-        const apiData = response.data.data.map(item => ({
-          label: item.lokasi,
-          value: item.lokasi
+        // Mengubah data API menjadi format yang sesuai untuk Dropdown dan menghapus duplikasi
+        const uniqueLocations = Array.from(new Set(response.data.data.map(item => item.lokasi)));
+        const apiData = uniqueLocations.map(lokasi => ({
+          label: lokasi,
+          value: lokasi
         }));
         setOptions(apiData);
       })

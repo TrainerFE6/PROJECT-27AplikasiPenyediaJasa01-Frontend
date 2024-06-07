@@ -16,6 +16,9 @@
 }
 .imgContainer img{
     width: 100%;
+    border-radius: 8px;
+    height: 190px;
+    object-fit: cover;
 }
 .purchaseButton{
     display: flex;

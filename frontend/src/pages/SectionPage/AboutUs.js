@@ -1,7 +1,7 @@
 import React from "react";
 import { PrimaryButton } from "../../components/Button";
 import classes from './AboutUs.module.css';
-import AboutImage from '../../assets/AboutImage.svg'
+import AboutImage from '../../assets/AboutImage.png'
 
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";

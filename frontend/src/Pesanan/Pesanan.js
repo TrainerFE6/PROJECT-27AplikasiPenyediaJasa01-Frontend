@@ -1,41 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { StyledPesanan } from "./StyledPesanan";
 import classes from "./Pesanan.module.css";
 
 const Pesanan = () => {
-  const [dataPesanan, setDataPesanan] = useState([
-    {
-      id_pesanan: 1,
-      id_admin: 1,
-      id_user: 1,
-      id_teknisi: 1,
-      nama_teknisi: "Teknisi 1",
-      tanggal_bayar: "2024-01-01",
-      tanggal_pelayanan: "2024-01-02",
-      total_harga: 100000,
-      opsi_pesanan: "Service",
-      status: "Selesai",
-    },
-    {
-      id_pesanan: 2,
-      id_admin: 2,
-      id_user: 2,
-      id_teknisi: 2,
-      nama_teknisi: "Teknisi 2",
-      tanggal_bayar: "2024-01-03",
-      tanggal_pelayanan: "2024-01-04",
-      total_harga: 200000,
-      opsi_pesanan: "Repair",
-      status: "Proses",
-    },
-  ]);
+  const [dataPesanan, setDataPesanan] = useState([]);
+  const [dataAdmin, setDataAdmin] = useState([]);
+  const [dataUser, setDataUser] = useState([]);
+  const [dataTeknisi, setDataTeknisi] = useState([]);
 
+  // Fetch data pesanan
+  useEffect(() => {
+    axios.get('http://localhost:5000/order')
+      .then(response => {
+        setDataPesanan(response.data.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
+
+  // Fetch data admin
+  useEffect(() => {
+    axios.get('http://localhost:5000/admin')
+      .then(response => {
+        setDataAdmin(response.data.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
+
+  // Fetch data user
+  useEffect(() => {
+    axios.get('http://localhost:5000/users')
+      .then(response => {
+        setDataUser(response.data.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
+
+  // Fetch data teknisi
+  useEffect(() => {
+    axios.get('http://localhost:5000/teknisi')
+      .then(response => {
+        setDataTeknisi(response.data.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }, []);
+
+  // Create new pesanan
   const [newPesanan, setNewPesanan] = useState({
-    id_pesanan: "",
     id_admin: "",
     id_user: "",
     id_teknisi: "",
-    nama_teknisi: "",
     tanggal_bayar: "",
     tanggal_pelayanan: "",
     total_harga: "",
@@ -60,7 +82,16 @@ const Pesanan = () => {
     const newId = dataPesanan.length ? dataPesanan[dataPesanan.length - 1].id_pesanan + 1 : 1;
     const pesananToAdd = { ...newPesanan, id_pesanan: newId };
     setDataPesanan([...dataPesanan, pesananToAdd]);
-    setNewPesanan({ id_pesanan: "", id_admin: "", id_user: "", id_teknisi: "", nama_teknisi: "", tanggal_bayar: "", tanggal_pelayanan: "", total_harga: "", opsi_pesanan: "", status: "" });
+    setNewPesanan({
+      id_admin: "",
+      id_user: "",
+      id_teknisi: "",
+      tanggal_bayar: "",
+      tanggal_pelayanan: "",
+      total_harga: "",
+      opsi_pesanan: "",
+      status: "",
+    });
     setShow(false);
   };
 
@@ -81,7 +112,16 @@ const Pesanan = () => {
       pesanan.id_pesanan === newPesanan.id_pesanan ? newPesanan : pesanan
     );
     setDataPesanan(updatedDataPesanan);
-    setNewPesanan({ id_pesanan: "", id_admin: "", id_user: "", id_teknisi: "", nama_teknisi: "", tanggal_bayar: "", tanggal_pelayanan: "", total_harga: "", opsi_pesanan: "", status: "" });
+    setNewPesanan({
+      id_admin: "",
+      id_user: "",
+      id_teknisi: "",
+      tanggal_bayar: "",
+      tanggal_pelayanan: "",
+      total_harga: "",
+      opsi_pesanan: "",
+      status: "",
+    });
     setEditingId(null);
     setShow(false);
   };
@@ -94,11 +134,27 @@ const Pesanan = () => {
     setShowDetails(null);
   };
 
+  // Function to find name by ID
+  const findUsernameByIdAdmin = (idAdmin, data) => {
+    const found = data.find(item => item.id_admin === idAdmin);
+    return found ? found.username : 'Unknown';
+  };
+  const findUsernameByIdUser = (idUser, data) => {
+    const found = data.find(item => item.id_user === idUser);
+    return found ? found.username : 'Unknown';
+  };
+
+  const findNameByIdTeknisi = (idTeknisi, data) => {
+    const found = data.find(item => item.id_teknisi === idTeknisi);
+    return found ? found.nama : 'Unknown';
+  };
+  
+  
+
   return (
     <StyledPesanan>
       <h1>Daftar Pesanan</h1>
       {!show && <button onClick={handleShow} className={classes.buttonEdit}>Tambah Pesanan Baru</button>}
-
       <div>
         {show && (
           <div className={classes.inputPesanan}>
@@ -188,9 +244,8 @@ const Pesanan = () => {
         <thead>
           <tr>
             <th>ID Pesanan</th>
-            <th>ID Admin</th>
-            <th>ID User</th>
-            <th>ID Teknisi</th>
+            <th>Nama Admin</th>
+            <th>Nama User</th>
             <th>Nama Teknisi</th>
             <th>Tanggal Bayar</th>
             <th>Tanggal Pelayanan</th>
@@ -205,14 +260,13 @@ const Pesanan = () => {
             <React.Fragment key={pesanan.id_pesanan}>
               <tr>
                 <td>{pesanan.id_pesanan}</td>
-                <td>{pesanan.id_admin}</td>
-                <td>{pesanan.id_user}</td>
-                <td>{pesanan.id_teknisi}</td>
-                <td>{pesanan.nama_teknisi}</td>
+                <td>{findUsernameByIdAdmin(pesanan.id_admin, dataAdmin)}</td>
+                <td>{findUsernameByIdUser(pesanan.id_user, dataUser)}</td>
+                <td>{findNameByIdTeknisi(pesanan.id_teknisi, dataTeknisi)}</td>
                 <td>{pesanan.tanggal_bayar}</td>
                 <td>{pesanan.tanggal_pelayanan}</td>
                 <td>{pesanan.total_harga}</td>
-                <td>{pesanan.opsi_pesanan}</td>
+                <td>{pesanan.opsi_pembayaran}</td>
                 <td>{pesanan.status}</td>
                 <td>
                   <button onClick={() => handleShowDetails(pesanan.id_pesanan)} className={classes.buttonShow}>Show</button>
@@ -224,10 +278,9 @@ const Pesanan = () => {
                 <div className={classes.inputPesanan}>
                   <h1>Detail Pesanan</h1>
                   <p><strong>ID Pesanan:</strong> {pesanan.id_pesanan}</p>
-                  <p><strong>ID Admin:</strong> {pesanan.id_admin}</p>
-                  <p><strong>ID User:</strong> {pesanan.id_user}</p>
-                  <p><strong>ID Teknisi:</strong> {pesanan.id_teknisi}</p>
-                  <p><strong>Nama Teknisi:</strong> {pesanan.nama_teknisi}</p>
+                  <p><strong>ID Admin:</strong> {findUsernameByIdAdmin(pesanan.id_admin, dataAdmin)}</p>
+                  <p><strong>ID User:</strong> {findUsernameByIdUser(pesanan.id_user, dataUser)}</p>
+                  <p><strong>ID Teknisi:</strong> {findNameByIdTeknisi(pesanan.id_teknisi, dataTeknisi)}</p>
                   <p><strong>Tanggal Bayar:</strong> {pesanan.tanggal_bayar}</p>
                   <p><strong>Tanggal Pelayanan:</strong> {pesanan.tanggal_pelayanan}</p>
                   <p><strong>Total Harga:</strong> {pesanan.total_harga}</p>
