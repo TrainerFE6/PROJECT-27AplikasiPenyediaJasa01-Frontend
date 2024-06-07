@@ -1,148 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { StyledTambahLayanan } from "./StyledAddLayanan";
 import classes from "./AddLayanan.module.css";
+import FormKategory from "../components/FormKategory";
 
 const TambahLayanan = () => {
-  const [dataLayanan, setDataLayanan] = useState([
-    {
-      id: 1,
-      kategory: "Service AC",
-      judul: "Service AC Murah Meriah",
-      lokasi: "Semarang",
-      harga: 500000,
-    },
-    {
-      id: 2,
-      kategory: "Ganti Freon AC",
-      judul: "Ganti Freon AC Terpercaya",
-      lokasi: "Surakarta",
-      harga: 900000,
-    },
-    {
-      id: 3,
-      kategory: "Pembersihan AC",
-      judul: "Pembersihan AC Kinclong",
-      lokasi: "Jakarta",
-      harga: 300000,
-    },
-  ]);
-
+  const [dataLayanan, setDataLayanan] = useState([]);
   const [newLayanan, setNewLayanan] = useState({
-    id: "",
-    kategory: "",
+    id_katagori: "",
+    nama_katagori: "",
     judul: "",
     lokasi: "",
     harga: "",
   });
-
   const [show, setShow] = useState(false);
-  const [editingId, setEditingId] = useState(null);
   const [showDetails, setShowDetails] = useState(null);
 
-  const handleShow = () => {
-    setShow(!show);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/kategori")
+      .then((response) => {
+        setDataLayanan(response.data.data || []); // Mengatasi kemungkinan data tidak ada
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  const handleShow = () => setShow(!show);
+
+  const handleTutup = () => {
+    setShow(false);
+    setNewLayanan({
+      id_katagori: "",
+      nama_katagori: "",
+      judul: "",
+      lokasi: "",
+      harga: "",
+    });
+    window.location.reload(); // Refresh halaman
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewLayanan({ ...newLayanan, [name]: value });
-  };
-
-  const handleAddLayanan = () => {
-    const newId = dataLayanan.length
-      ? dataLayanan[dataLayanan.length - 1].id + 1
-      : 1;
-    const layananToAdd = {
-      ...newLayanan,
-      id: newId,
-      harga: parseInt(newLayanan.harga),
-    };
-    setDataLayanan([...dataLayanan, layananToAdd]);
-    setNewLayanan({ id: "", kategory: "", judul: "", lokasi: "", harga: "" });
-  };
-
-  const handleDeleteLayanan = (id) => {
-    const updatedDataLayanan = dataLayanan.filter((layanan) => layanan.id !== id);
-    setDataLayanan(updatedDataLayanan);
+  const deleteLayanan = (id) => {
+    axios
+      .delete(`http://localhost:5000/kategori/${id}`)
+      .then((response) => {
+        setDataLayanan(
+          dataLayanan.filter((layanan) => layanan.id_katagori !== id)
+        );
+      })
+      .catch((error) => {
+        console.error("Error deleting service:", error);
+      });
   };
 
   const handleEditLayanan = (id) => {
-    const layananToEdit = dataLayanan.find((layanan) => layanan.id === id);
-    setEditingId(id);
-    setNewLayanan(layananToEdit);
-    setShow(true);
-  };
-
-  const handleSaveEditLayanan = () => {
-    const updatedDataLayanan = dataLayanan.map((layanan) =>
-      layanan.id === newLayanan.id ? newLayanan : layanan
+    const layananToEdit = dataLayanan.find(
+      (layanan) => layanan.id_katagori === id
     );
-    setDataLayanan(updatedDataLayanan);
-    setNewLayanan({ id: "", kategory: "", judul: "", lokasi: "", harga: "" });
-    setEditingId(null);
-    setShow(false);
+    if (layananToEdit) {
+      setNewLayanan(layananToEdit);
+      setShow(true);
+    }
   };
 
-  const handleShowDetails = (id) => {
-    setShowDetails(id);
-  };
+  const handleShowDetails = (id) => setShowDetails(id);
 
-  const handleCloseDetails = () => {
-    setShowDetails(null);
-  };
+  const handleCloseDetails = () => setShowDetails(null);
 
   return (
     <StyledTambahLayanan>
       <h1>Tambah Layanan</h1>
-      {!show && <button onClick={handleShow} className={classes.buttonEdit}>Tambah Layanan Baru</button>}
+      {!show && (
+        <button onClick={handleShow} className={classes.buttonEdit}>
+          Tambah Layanan Baru
+        </button>
+      )}
 
-      <div>
-        {show && (
-          <div className={classes.inputLayanan}>
-            <h1>Form Layanan AC</h1>
-            <label>Masukkan Kategori</label>
-            <input
-              type="text"
-              name="kategory"
-              value={newLayanan.kategory}
-              onChange={handleInputChange}
-              placeholder="Kategori Layanan"
-            />
-            <label>Masukkan Judul Layanan</label>
-            <input
-              type="text"
-              name="judul"
-              value={newLayanan.judul}
-              onChange={handleInputChange}
-              placeholder="Judul Layanan"
-            />
-            <label>Masukkan Lokasi</label>
-            <input
-              type="text"
-              name="lokasi"
-              value={newLayanan.lokasi}
-              onChange={handleInputChange}
-              placeholder="Lokasi"
-            />
-            <label>Masukkan Harga</label>
-            <input
-              type="number"
-              name="harga"
-              value={newLayanan.harga}
-              onChange={handleInputChange}
-              placeholder="Harga"
-            />
-            <div className={classes.buttonForm}>
-              {editingId !== null ? (
-                <button onClick={handleSaveEditLayanan} className={classes.buttonEdit}>Simpan Perubahan</button>
-              ) : (
-                <button onClick={handleAddLayanan} className={classes.buttonEdit}>Tambah Layanan Baru</button>
-              )}
-              <button onClick={handleShow} className={classes.buttonEdit}>Tutup</button>
-            </div>
-          </div>
-        )}
-      </div>
+      {show && (
+        <div className={classes.inputLayanan}>
+          <FormKategory newLayanan={newLayanan} setNewLayanan={setNewLayanan} />
+          <button onClick={handleTutup} className={classes.buttonEdit}>
+            Tutup
+          </button>
+        </div>
+      )}
+
       <table className={classes.table}>
         <thead>
           <tr>
@@ -157,35 +100,73 @@ const TambahLayanan = () => {
         </thead>
         <tbody>
           {dataLayanan.map((layanan) => (
-            <React.Fragment key={layanan.id}>
-              <tr>
-                <td>{layanan.id}</td>
-                <td>{layanan.kategory}</td>
-                <td>Gambar</td>
-                <td>{layanan.judul}</td>
-                <td>{layanan.lokasi}</td>
-                <td>Rp.{layanan.harga}</td>
-                <td>
-                  <button onClick={() => handleShowDetails(layanan.id)} className={classes.buttonShow}>Show</button>
-                  <button onClick={() => handleEditLayanan(layanan.id)} className={classes.buttonEdit}>Edit</button>
-                  <button onClick={() => handleDeleteLayanan(layanan.id)} className={classes.buttonDanger}>Hapus</button>
-                </td>
-              </tr>
-              {showDetails === layanan.id && (
-                <div className={classes.inputLayanan}>
-                  <h1>Detail Layanan</h1>
-                  <p><strong>ID:</strong> {layanan.id}</p>
-                  <p><strong>Kategori:</strong> {layanan.kategory}</p>
-                  <p><strong>Judul:</strong> {layanan.judul}</p>
-                  <p><strong>Lokasi:</strong> {layanan.lokasi}</p>
-                  <p><strong>Harga:</strong> Rp.{layanan.harga}</p>
-                  <button onClick={handleCloseDetails} className={classes.buttonEdit}>Tutup</button>
-                </div>
-              )}
-            </React.Fragment>
+            <tr key={layanan.id_katagori}>
+              <td>{layanan.id_katagori}</td>
+              <td>{layanan.nama_katagori}</td>
+              <td>
+                <img
+                  style={{ width: "50px", height: "50px" }}
+                  src={`http://localhost:5000/uploads/catagori/${layanan.gambar}`}
+                  alt="Gambar Layanan"
+                />
+              </td>
+              <td>{layanan.judul}</td>
+              <td>{layanan.lokasi}</td>
+              <td>Rp.{layanan.harga}</td>
+              <td>
+                <button
+                  onClick={() => handleShowDetails(layanan.id_katagori)}
+                  className={classes.buttonShow}
+                >
+                  Detail
+                </button>
+                <button
+                  onClick={() => handleEditLayanan(layanan.id_katagori)}
+                  className={classes.buttonEdit}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteLayanan(layanan.id_katagori)}
+                  className={classes.buttonDanger}
+                >
+                  Hapus
+                </button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
+
+      {showDetails && (
+        <div className={classes.inputLayanan}>
+          <h2>Detail Layanan</h2>
+          {dataLayanan
+            .filter((layanan) => layanan.id_katagori === showDetails)
+            .map((layanan) => (
+              <div key={layanan.id_katagori}>
+                <p>
+                  <strong>ID:</strong> {layanan.id_katagori}
+                </p>
+                <p>
+                  <strong>Kategori:</strong> {layanan.nama_katagori}
+                </p>
+                <p>
+                  <strong>Judul:</strong> {layanan.judul}
+                </p>
+                <p>
+                  <strong>Lokasi:</strong> {layanan.lokasi}
+                </p>
+                <p>
+                  <strong>Harga:</strong> Rp.{layanan.harga}
+                </p>
+              </div>
+            ))}
+          <button onClick={handleCloseDetails} className={classes.buttonEdit}>
+            Tutup
+          </button>
+        </div>
+      )}
     </StyledTambahLayanan>
   );
 };

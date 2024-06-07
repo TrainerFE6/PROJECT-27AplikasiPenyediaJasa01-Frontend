@@ -68,7 +68,7 @@ export const Table = styled.table`
   }
 
   th {
-    background-color: #f2f2f2;
+    background-color: #3EB492;
     text-align: left;
   }
 `;
