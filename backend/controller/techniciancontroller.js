@@ -82,31 +82,53 @@ const updateteknisi = function (req, res) {
     let nama = req.body.nama;
     let alamat_cabang = req.body.alamat_cabang;
     let no_hp = req.body.no_hp;
-    let gambar = req.file ? req.file.filename : req.body.gambar;
+    let gambarBaru = req.file ? req.file.filename : null;
     let status = req.body.status;
     let errors = false;
 
-       if(!nama) {
-    errors = true;
-    res.json({pesan :'Field nama belum diisi, Field harus diisi dengan lengkap'});
-    }
-
-    if(!alamat_cabang) {
+    if (!nama) {
         errors = true;
-        res.json({pesan :'Field alamat cabang belum diisi, Field harus diisi dengan lengkap'});
+        res.json({ pesan: 'Field nama belum diisi, Field harus diisi dengan lengkap' });
+        return;
     }
 
-    if(!no_hp) {
+    if (!alamat_cabang) {
         errors = true;
-        res.json({pesan :'Field nomer hp belum diisi, Field harus diisi dengan lengkap'});
+        res.json({ pesan: 'Field alamat cabang belum diisi, Field harus diisi dengan lengkap' });
+        return;
     }
 
-    if(!status) {
+    if (!no_hp) {
         errors = true;
-        res.json({pesan :'Field role belum diisi, Field harus diisi dengan lengkap'});
+        res.json({ pesan: 'Field nomer hp belum diisi, Field harus diisi dengan lengkap' });
+        return;
     }
 
-    if (!errors) {
+    if (!status) {
+        errors = true;
+        res.json({ pesan: 'Field role belum diisi, Field harus diisi dengan lengkap' });
+        return;
+    }
+
+    connection.query('SELECT gambar FROM tbl_technicians WHERE id_teknisi = ?', [id], function (err, rows) {
+        if (err) {
+            res.send('error', err);
+            return;
+        }
+
+        let gambarLama = rows.length > 0 ? rows[0].gambar : null;
+
+        if (gambarBaru && gambarLama) {
+            let gambarPath = path.join(__dirname, '../public/uploads/technician', gambarLama);
+            fs.unlink(gambarPath, (err) => {
+                if (err) {
+                    console.log('Gagal menghapus gambar lama: ', err);
+                }
+            });
+        }
+
+        let gambar = gambarBaru ? gambarBaru : gambarLama;
+
         let formData = {
             nama: nama,
             alamat_cabang: alamat_cabang,
@@ -115,15 +137,67 @@ const updateteknisi = function (req, res) {
             status: status
         };
 
-        connection.query('UPDATE tbl_technicians SET ? WHERE id_teknisi = ' + id, formData, function (err, result) {
+        connection.query('UPDATE tbl_technicians SET ? WHERE id_teknisi = ?', [formData, id], function (err, result) {
             if (err) {
                 res.send('error', err);
-            } else {
-                res.send('Data Berhasil Diupdate!');
+                return;
             }
+
+            res.send('Data Berhasil Diupdate!');
         });
-    }
+    });
 };
+
+
+
+
+// const updateteknisi = function (req, res) {
+//     let id = req.params.id;
+//     let nama = req.body.nama;
+//     let alamat_cabang = req.body.alamat_cabang;
+//     let no_hp = req.body.no_hp;
+//     let gambar = req.file ? req.file.filename : req.body.gambar;
+//     let status = req.body.status;
+//     let errors = false;
+
+//        if(!nama) {
+//     errors = true;
+//     res.json({pesan :'Field nama belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if(!alamat_cabang) {
+//         errors = true;
+//         res.json({pesan :'Field alamat cabang belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if(!no_hp) {
+//         errors = true;
+//         res.json({pesan :'Field nomer hp belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if(!status) {
+//         errors = true;
+//         res.json({pesan :'Field role belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if (!errors) {
+//         let formData = {
+//             nama: nama,
+//             alamat_cabang: alamat_cabang,
+//             no_hp: no_hp,
+//             gambar: gambar,
+//             status: status
+//         };
+
+//         connection.query('UPDATE tbl_technicians SET ? WHERE id_teknisi = ' + id, formData, function (err, result) {
+//             if (err) {
+//                 res.send('error', err);
+//             } else {
+//                 res.send('Data Berhasil Diupdate!');
+//             }
+//         });
+//     }
+// };
 
 // const deleteteknisi = function (req, res) {
 //     let id = req.params.id;
