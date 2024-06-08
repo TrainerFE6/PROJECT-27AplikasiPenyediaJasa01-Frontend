@@ -7,7 +7,7 @@ function Signup() {
     <div className=' template d-flex justify-content-center align-items-center vh-100' style={{ backgroundColor: '#1D204F' }}>
         <div className='signup p-5 rounded bg-white'>
         <form>
-            <h3 className='text-center '>Sign Up</h3>
+            <h3 className='text-center '>Sign Up Admin</h3>
             <div className='mb-2'>
                 {/* <label htmlFor='fname'>First Name</label> */}
                 <input type="text" placeholder='username' className='form-control'/>

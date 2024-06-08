@@ -21,11 +21,12 @@ function LoginAdmin() {
                 Forget <a href="" className='text-decoration-none'>Password?</a> 
             </div> */}
             <div className='d-grid'>
-                <Link to="/deskripsiproduk" className='d-grid text-decoration-none'><button className='btn btn-primary'style={{ backgroundColor: '#1D204F' }}>Login</button></Link>
+                <Link to="/" className='d-grid text-decoration-none'><button className='btn btn-primary'style={{ backgroundColor: '#1D204F' }}>Login</button></Link>
             </div>
-            {/* <div className='text- mt-2'>
-                Belum punya akun? <Link to="/signup" className='ms-2 text-decoration-none'>Sign up</Link>
-            </div> */}
+            <div className='text- mt-2'>
+                Belum punya akun? <Link to="/signupadmin" className='ms-2 text-decoration-none'>Sign up</Link>
+            </div>
+            
         </form>
         </div>
     </div>

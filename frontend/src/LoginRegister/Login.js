@@ -18,9 +18,9 @@ function Login() {
                 {/* <label htmlFor='password'>Password</label> */}
                 <input type="password" placeholder='Masukan Password' className='form-control'/>
             </div>
-            <div className='text- mt-2 mb-2 '>
-                Forget <a href="/" className='text-decoration-none'>Password?</a> 
-            </div>
+            {/* <div className='text- mt-2 mb-2 '>
+            Forget <Link to="/lupasandi" className='text-decoration-none'>Password?</Link> 
+            </div> */}
             <div className='d-grid'>
                 <Link to="/" className='d-grid text-decoration-none'><button className='btn btn-primary'style={{ backgroundColor: '#1D204F' }}>Login</button></Link>
             </div>

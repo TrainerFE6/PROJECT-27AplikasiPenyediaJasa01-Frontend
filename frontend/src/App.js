@@ -17,6 +17,8 @@ import LayananDetail from './pages/LayananDetail'; // Halaman detail
 
 // import './App.css';
 import LoginAdmin from "./LoginRegister/LoginAdmin";
+import SignupAdmin from "./LoginRegister/SignupAdmin";
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/loginadmin" element={<LoginAdmin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/signupadmin" element={<SignupAdmin />} />
           <Route path="/catalog" element={<CatalogProduct />} />
           <Route path="/testapi" element={<TestAPI />} />
           <Route path="/layanan/:id" element={<LayananDetail />} /> {/* Rute untuk halaman detail */}
