@@ -32,6 +32,10 @@ label {
   .buttonDanger {
     background-color: red;
     margin-left: 8px;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 16px;
+    color: white;
   }
   
   .buttonDanger:hover {
@@ -39,8 +43,12 @@ label {
   }
   
   .buttonEdit {
-    background-color: #3498db;
+    background-color: #3EB492;
     margin-left: 8px;
+    border: none;
+    padding: 5px 16px;
+    color: white;
+    border-radius: 14px;
   }
   
   .buttonEdit:hover {
@@ -49,6 +57,10 @@ label {
   
   .buttonShow {
     background-color: yellowgreen;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 16px;
+    color: white;
   }
   
   .buttonShow:hover {
@@ -68,7 +80,13 @@ label {
     text-align: left;
   }
   
-  th {
-    background-color: #f2f2f2;
+  .table th {
+    background-color: #1D204F;
+    color: white;
+  }
+
+  .data-image-layanan img{
+    width: 50px;
+    height: 50px;
   }
   

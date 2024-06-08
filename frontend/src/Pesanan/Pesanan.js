@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { StyledPesanan } from "./StyledPesanan";
 import classes from "./Pesanan.module.css";
+import FormPesanan from '../components/FormPesanan';
 
 const Pesanan = () => {
   const [dataPesanan, setDataPesanan] = useState([]);
@@ -73,10 +74,10 @@ const Pesanan = () => {
     setShow(!show);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewPesanan({ ...newPesanan, [name]: value });
-  };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewPesanan({ ...newPesanan, [name]: value });
+  // };
 
   const handleAddPesanan = () => {
     const newId = dataPesanan.length ? dataPesanan[dataPesanan.length - 1].id_pesanan + 1 : 1;
@@ -158,77 +159,7 @@ const Pesanan = () => {
       <div>
         {show && (
           <div className={classes.inputPesanan}>
-            <h1>Form Pesanan</h1>
-            <label>Masukkan ID Admin</label>
-            <input
-              type="text"
-              name="id_admin"
-              value={newPesanan.id_admin}
-              onChange={handleInputChange}
-              placeholder="ID Admin"
-            />
-            <label>Masukkan ID User</label>
-            <input
-              type="text"
-              name="id_user"
-              value={newPesanan.id_user}
-              onChange={handleInputChange}
-              placeholder="ID User"
-            />
-            <label>Masukkan ID Teknisi</label>
-            <input
-              type="text"
-              name="id_teknisi"
-              value={newPesanan.id_teknisi}
-              onChange={handleInputChange}
-              placeholder="ID Teknisi"
-            />
-            <label>Masukkan Nama Teknisi</label>
-            <input
-              type="text"
-              name="nama_teknisi"
-              value={newPesanan.nama_teknisi}
-              onChange={handleInputChange}
-              placeholder="Nama Teknisi"
-            />
-            <label>Masukkan Tanggal Bayar</label>
-            <input
-              type="date"
-              name="tanggal_bayar"
-              value={newPesanan.tanggal_bayar}
-              onChange={handleInputChange}
-            />
-            <label>Masukkan Tanggal Pelayanan</label>
-            <input
-              type="date"
-              name="tanggal_pelayanan"
-              value={newPesanan.tanggal_pelayanan}
-              onChange={handleInputChange}
-            />
-            <label>Masukkan Total Harga</label>
-            <input
-              type="number"
-              name="total_harga"
-              value={newPesanan.total_harga}
-              onChange={handleInputChange}
-              placeholder="Total Harga"
-            />
-            <label>Masukkan Opsi Pesanan</label>
-            <input
-              type="text"
-              name="opsi_pesanan"
-              value={newPesanan.opsi_pesanan}
-              onChange={handleInputChange}
-              placeholder="Opsi Pesanan"
-            />
-            <label>Masukkan Status</label>
-            <input
-              type="text"
-              name="status"
-              value={newPesanan.status}
-              onChange={handleInputChange}
-              placeholder="Status"
-            />
+            <FormPesanan></FormPesanan>
             <div className={classes.buttonForm}>
               {editingId !== null ? (
                 <button onClick={handleSaveEditPesanan} className={classes.buttonEdit}>Simpan Perubahan</button>
