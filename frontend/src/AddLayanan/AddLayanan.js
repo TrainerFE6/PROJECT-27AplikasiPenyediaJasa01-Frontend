@@ -20,7 +20,7 @@ const TambahLayanan = () => {
     axios
       .get("http://localhost:5000/kategori")
       .then((response) => {
-        setDataLayanan(response.data.data || []); // Mengatasi kemungkinan data tidak ada
+        setDataLayanan(response.data.data || []);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -38,7 +38,7 @@ const TambahLayanan = () => {
       lokasi: "",
       harga: "",
     });
-    window.location.reload(); // Refresh halaman
+    window.location.reload();
   };
 
   const deleteLayanan = (id) => {
@@ -79,7 +79,7 @@ const TambahLayanan = () => {
 
       {show && (
         <div className={classes.inputLayanan}>
-          <FormKategory newLayanan={newLayanan} setNewLayanan={setNewLayanan} />
+          <FormKategory newLayanan={newLayanan} setNewLayanan={setNewLayanan} handleTutup={handleTutup} />
           <button onClick={handleTutup} className={classes.buttonEdit}>
             Tutup
           </button>
