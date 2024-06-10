@@ -55,7 +55,7 @@ const FormPesanan = () => {
     data.append('status', formData.status);
 
     try {
-      const response = await axios.post('http://localhost:5000/pesanan', data, {
+      const response = await axios.post('http://localhost:5000/order', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

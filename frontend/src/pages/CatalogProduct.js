@@ -5,6 +5,7 @@ import LocationDropdown from '../components/LocationDropdown';
 import CategoryDropdown from '../components/CategoryDropdown';
 import classes from './CatalogProduct.module.css';
 import LayananCard from '../components/LayananCard';
+import Footer from './SectionPage/Footers';
 
 const CatalogProduct = () => {
   const [dataLayanan, setDataLayanan] = useState([]);
@@ -71,6 +72,8 @@ const CatalogProduct = () => {
           ))}
         </div>
       </div>
+
+    <Footer></Footer>
     </>
   );
 }

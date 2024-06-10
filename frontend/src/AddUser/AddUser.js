@@ -1,166 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { StyledTambahUser } from "./StyledAddUser";
 import classes from "./AddUser.module.css";
+import FormUser from "../components/FormAddUser";
 
 const TambahUser = () => {
-  const [dataUser, setDataUser] = useState([
-    {
-      id: 1,
-      nama: "Amin 1",
-      email: "Amin1@gmail.com",
-      password: "egwdgfdgdf",
-      alamat: "Semarang Timur",
-      no_hp: 5000000,
-    },
-    {
-      id: 2,
-      nama: "Amin 2",
-      email: "Amin2@gmail.com",
-      password: "egwdgfdgdf",
-      alamat: "Semarang Barat",
-      no_hp: 5000000,
-    },
-    {
-      id: 3,
-      nama: "Amin 3",
-      email: "Amin13@gmail.com",
-      password: "egwdgfdgdf",
-      alamat: "Semarang Timur",
-      no_hp: 5000000,
-    },
-  ]);
-
+  const [dataUser, setDataUser] = useState([]);
   const [newUser, setNewUser] = useState({
-    id: "",
-    nama: "",
+    id_user: "",
+    username: "",
     email: "",
     password: "",
+    gambar: null,
     alamat: "",
     no_hp: "",
   });
-
   const [show, setShow] = useState(false);
-  const [editingId, setEditingId] = useState(null);
   const [showDetails, setShowDetails] = useState(null);
 
-  const handleShow = () => {
-    setShow(!show);
-  };
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/users")
+      .then((response) => {
+        setDataUser(response.data.data || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewUser({ ...newUser, [name]: value });
-  };
+  const handleShow = () => setShow(!show);
 
-  const handleAddUser = () => {
-    const newId = dataUser.length ? dataUser[dataUser.length - 1].id + 1 : 1;
-    const userToAdd = {
-      ...newUser,
-      id: newId,
-      no_hp: parseInt(newUser.no_hp),
-    };
-    setDataUser([...dataUser, userToAdd]);
-    setNewUser({ id: "", nama: "", email: "", password: "", alamat: "", no_hp: "" });
+  const handleTutup = () => {
     setShow(false);
+    setNewUser({
+      id_user: "",
+      username: "",
+      email: "",
+      password: "",
+      gambar: null,
+      alamat: "",
+      no_hp: "",
+    });
+    window.location.reload(); // Refresh halaman
   };
 
-  const handleDeleteUser = (id) => {
-    const updatedDataUser = dataUser.filter((user) => user.id !== id);
-    setDataUser(updatedDataUser);
+  const deleteUser = (id) => {
+    axios
+      .delete(`http://localhost:5000/users/${id}`)
+      .then((response) => {
+        setDataUser(dataUser.filter((user) => user.id_user !== id));
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+      });
   };
 
   const handleEditUser = (id) => {
-    const userToEdit = dataUser.find((user) => user.id === id);
-    setEditingId(id);
-    setNewUser(userToEdit);
-    setShow(true);
+    const userToEdit = dataUser.find((user) => user.id_user === id);
+    if (userToEdit) {
+      setNewUser(userToEdit);
+      setShow(true);
+    }
   };
 
-  const handleSaveEditUser = () => {
-    const updatedDataUser = dataUser.map((user) =>
-      user.id === newUser.id ? newUser : user
-    );
-    setDataUser(updatedDataUser);
-    setNewUser({ id: "", nama: "", email: "", password: "", alamat: "", no_hp: "" });
-    setEditingId(null);
-    setShow(false);
-  };
+  const handleShowDetails = (id) => setShowDetails(id);
 
-  const handleShowDetails = (id) => {
-    setShowDetails(id);
-  };
-
-  const handleCloseDetails = () => {
-    setShowDetails(null);
-  };
+  const handleCloseDetails = () => setShowDetails(null);
 
   return (
     <StyledTambahUser>
       <h1>Tambah User</h1>
-      {!show && <button onClick={handleShow} className={classes.buttonEdit}>Tambah User Baru</button>}
+      {!show && (
+        <button onClick={handleShow} className={classes.buttonEdit}>
+          Tambah User Baru
+        </button>
+      )}
 
-      <div>
-        {show && (
-          <div className={classes.inputUser}>
-            <h1>Form User</h1>
-            <label>Masukkan Nama</label>
-            <input
-              type="text"
-              name="nama"
-              value={newUser.nama}
-              onChange={handleInputChange}
-              placeholder="Nama User"
-            />
-            <label>Masukkan Email User</label>
-            <input
-              type="text"
-              name="email"
-              value={newUser.email}
-              onChange={handleInputChange}
-              placeholder="Email User"
-            />
-            <label>Masukkan Password</label>
-            <input
-              type="text"
-              name="password"
-              value={newUser.password}
-              onChange={handleInputChange}
-              placeholder="Password"
-            />
-            <label>Masukkan Alamat</label>
-            <input
-              type="text"
-              name="alamat"
-              value={newUser.alamat}
-              onChange={handleInputChange}
-              placeholder="Alamat"
-            />
-            <label>Masukkan No HP</label>
-            <input
-              type="number"
-              name="no_hp"
-              value={newUser.no_hp}
-              onChange={handleInputChange}
-              placeholder="No HP"
-            />
-            <div className={classes.buttonForm}>
-              {editingId !== null ? (
-                <button onClick={handleSaveEditUser} className={classes.buttonEdit}>Simpan Perubahan</button>
-              ) : (
-                <button onClick={handleAddUser} className={classes.buttonEdit}>Tambah User Baru</button>
-              )}
-              <button onClick={handleShow} className={classes.buttonEdit}>Tutup</button>
-            </div>
+      {show && (
+        <div className={classes.inputUser}>
+          <FormUser newUser={newUser} setNewUser={setNewUser} />
+          <div className={classes.buttonForm}>
+            <button onClick={handleTutup} className={classes.buttonEdit}>
+              Tutup
+            </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
       <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>Nama User</th>
             <th>Email User</th>
-            <th>Password</th>
             <th>Gambar</th>
             <th>Alamat</th>
             <th>No HP</th>
@@ -169,37 +102,89 @@ const TambahUser = () => {
         </thead>
         <tbody>
           {dataUser.map((user) => (
-            <React.Fragment key={user.id}>
-              <tr>
-                <td>{user.id}</td>
-                <td>{user.nama}</td>
-                <td>{user.email}</td>
-                <td>{user.password}</td>
-                <td>Gambar</td>
-                <td>{user.alamat}</td>
-                <td>{user.no_hp}</td>
-                <td>
-                  <button onClick={() => handleShowDetails(user.id)} className={classes.buttonShow}>Show</button>
-                  <button onClick={() => handleEditUser(user.id)} className={classes.buttonEdit}>Edit</button>
-                  <button onClick={() => handleDeleteUser(user.id)} className={classes.buttonDanger}>Hapus</button>
-                </td>
-              </tr>
-              {showDetails === user.id && (
-                <div className={classes.inputUser}>
-                  <h1>Detail User</h1>
-                  <p><strong>ID:</strong> {user.id}</p>
-                  <p><strong>Nama:</strong> {user.nama}</p>
-                  <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>Password:</strong> {user.password}</p>
-                  <p><strong>Alamat:</strong> {user.alamat}</p>
-                  <p><strong>No HP:</strong> {user.no_hp}</p>
-                  <button onClick={handleCloseDetails} className={classes.buttonEdit}>Tutup</button>
-                </div>
-              )}
-            </React.Fragment>
+            <tr key={user.id_user}>
+              <td>{user.id_user}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              <td>
+                {user.gambar ? (
+                  <img
+                    style={{ width: "50px", height: "50px" }}
+                    src={`http://localhost:5000/uploads/users/${user.gambar}`}
+                    alt="Gambar User"
+                  />
+                ) : (
+                  "No Image"
+                )}
+              </td>
+              <td>{user.alamat}</td>
+              <td>{user.no_hp}</td>
+              <td>
+                <button
+                  onClick={() => handleEditUser(user.id_user)}
+                  className={classes.buttonEdit}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteUser(user.id_user)}
+                  className={classes.buttonDanger}
+                >
+                  Hapus
+                </button>
+                <button
+                  onClick={() => handleShowDetails(user.id_user)}
+                  className={classes.buttonDetails}
+                >
+                  Details
+                </button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
+
+      {showDetails && (
+        <div className={classes.inputUser}>
+          <h2>Detail User</h2>
+          {dataUser
+            .filter((user) => user.id_user === showDetails)
+            .map((user) => (
+              <div key={user.id_user}>
+                <p>
+                  <strong>ID:</strong> {user.id_user}
+                </p>
+                <p>
+                  <strong>Nama:</strong> {user.username}
+                </p>
+                <p>
+                  <strong>Email:</strong> {user.email}
+                </p>
+                <p>
+                  <strong>Alamat:</strong> {user.alamat}
+                </p>
+                <p>
+                  <strong>No HP:</strong> {user.no_hp}
+                </p>
+                <p>
+                  <strong>Gambar:</strong>
+                  {user.gambar ? (
+                    <img
+                      style={{ width: "100px", height: "100px" }}
+                      src={`http://localhost:5000/uploads/users/${user.gambar}`}
+                      alt="Gambar User"
+                    />
+                  ) : (
+                    "No Image"
+                  )}
+                </p>
+              </div>
+            ))}
+          <button onClick={handleCloseDetails} className={classes.buttonEdit}>
+            Tutup
+          </button>
+        </div>
+      )}
     </StyledTambahUser>
   );
 };

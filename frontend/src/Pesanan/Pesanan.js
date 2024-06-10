@@ -206,7 +206,7 @@ const Pesanan = () => {
                 </td>
               </tr>
               {showDetails === pesanan.id_pesanan && (
-                <div className={classes.inputPesanan}>
+                <div className={classes.inputLayanan}>
                   <h1>Detail Pesanan</h1>
                   <p><strong>ID Pesanan:</strong> {pesanan.id_pesanan}</p>
                   <p><strong>ID Admin:</strong> {findUsernameByIdAdmin(pesanan.id_admin, dataAdmin)}</p>

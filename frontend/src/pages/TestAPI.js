@@ -1,76 +1,106 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const TestApi = () => {
-  const [formData, setFormData] = useState({
-    nama_katagori: '',
-    judul: '',
-    lokasi: '',
-    harga: '',
-    gambar: null,
-  });
+const TambahDataUser = () => {
+    const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        gambar: null,
+        alamat: '',
+        no_hp: ''
+    });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+    const handleChange = (e) => {
+        setUserData({
+            ...userData,
+            [e.target.name]: e.target.value
+        });
+        console.log('Data setelah input berubah:', userData);
+    };
 
-  const handleFileChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      gambar: e.target.files[0],
-    }));
-  };
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setUserData({
+            ...userData,
+            gambar: file
+        });
+        console.log('Gambar yang dipilih:', file);
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
-    data.append('nama_katagori', formData.nama_katagori);
-    data.append('judul', formData.judul);
-    data.append('lokasi', formData.lokasi);
-    data.append('harga', formData.harga);
-    data.append('gambar', formData.gambar);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log('Data sebelum dikirim:', userData);
 
-    try {
-      const response = await axios.post('http://localhost:5000/kategori', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('Response:', response.data);
-    } catch (error) {
-      console.error('Error posting data:', error);
-    }
-  };
+        if (!userData.gambar) {
+            console.error('Gambar harus dipilih');
+            alert('Gambar harus dipilih');
+            return;
+        }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Nama Kategori:</label>
-        <input type="text" name="nama_katagori" value={formData.nama_katagori} onChange={handleChange} />
-      </div>
-      <div>
-        <label>Judul:</label>
-        <input type="text" name="judul" value={formData.judul} onChange={handleChange} />
-      </div>
-      <div>
-        <label>Lokasi:</label>
-        <input type="text" name="lokasi" value={formData.lokasi} onChange={handleChange} />
-      </div>
-      <div>
-        <label>Harga:</label>
-        <input type="text" name="harga" value={formData.harga} onChange={handleChange} />
-      </div>
-      <div>
-        <label>Gambar:</label>
-        <input type="file" name="gambar" onChange={handleFileChange} />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
-  );
+        const formData = new FormData();
+        formData.append('username', userData.username);
+        formData.append('email', userData.email);
+        formData.append('password', userData.password);
+        formData.append('gambar', userData.gambar);
+        formData.append('alamat', userData.alamat);
+        formData.append('no_hp', userData.no_hp);
+
+        try {
+            console.log('Mengirim data...');
+            const response = await axios.post('http://localhost:5000/users', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log('Server response:', response.data);
+            alert('Data berhasil ditambahkan!');
+            setUserData({
+                username: '',
+                email: '',
+                password: '',
+                gambar: null,
+                alamat: '',
+                no_hp: ''
+            });
+        } catch (error) {
+            console.error('Error saat mengirim data:', error);
+            alert('Terjadi kesalahan saat menambahkan data.');
+        }
+    };
+
+    return (
+        <div>
+            <h2>Tambah Data User</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>username:</label>
+                    <input type="text" name="username" value={userData.username} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input type="email" name="email" value={userData.email} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input type="password" name="password" value={userData.password} onChange={handleChange} required />
+                </div>
+                <div>
+                    <label>Gambar:</label>
+                    <input type="file" name="gambar" onChange={handleFileChange} required />
+                </div>
+                <div>
+                    <label>Alamat:</label>
+                    <input type="text" name="alamat" value={userData.alamat} onChange={handleChange} />
+                </div>
+                <div>
+                    <label>No HP:</label>
+                    <input type="text" name="no_hp" value={userData.no_hp} onChange={handleChange} />
+                </div>
+                <button type="submit">Tambah Data User</button>
+            </form>
+        </div>
+    );
 };
 
-export default TestApi;
+export default TambahDataUser;

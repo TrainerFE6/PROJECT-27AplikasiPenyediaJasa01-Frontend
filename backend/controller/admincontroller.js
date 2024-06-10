@@ -41,7 +41,7 @@ const getadminId = function (req, res) {
 
   const createadmin = function (req, res) {
 
-    let nama = req.body.nama;
+    let username = req.body.username;
     let email = req.body.email;
     let password = req.body.password;
     let gambar = req.file.filename;
@@ -50,9 +50,9 @@ const getadminId = function (req, res) {
     let role = req.body.role;
     let errors = false;
 
-    if(!nama) {
+    if(!username) {
     errors = true;
-    res.json({pesan :'Field nama belum diisi, Field harus diisi dengan lengkap'});
+    res.json({pesan :'Field username belum diisi, Field harus diisi dengan lengkap'});
     }
 
     if(!email) {
@@ -83,7 +83,7 @@ const getadminId = function (req, res) {
     // if no error
     if(!errors) {
     let formData = {
-    nama: username,
+    username: username,
     email: email,
     password: password,
     gambar: gambar,
@@ -169,7 +169,7 @@ const updateadmin = function(req, res) {
     res.send('error', err);
     res.json({
     id_admin: req.params.id_admin,
-    username: formData.nama,
+    username: formData.username,
     email: formData.email,
     password: formData.password,
     gambar: formData.gambar,

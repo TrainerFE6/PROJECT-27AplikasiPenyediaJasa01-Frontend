@@ -2,6 +2,8 @@ import React from "react";
 import { PrimaryButton } from "../../components/Button";
 import classes from './AboutUs.module.css';
 import AboutImage from '../../assets/AboutImage.png'
+import { Link } from 'react-router-dom';
+
 
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -36,7 +38,7 @@ function AboutUs(){
                 <h3>Selamat Datang di <span>JasaKu</span></h3>
                 <h2>Tingkatkan Kesejukan dengan AC Berkualitas</h2>
                 <p>Kami adalah mitra terpercaya Anda dalam menjaga kenyamanan dan kesejukan di rumah atau tempat kerja. Dengan tim ahli yang berpengalaman dan layanan berkualitas tinggi, kami menyediakan solusi lengkap untuk instalasi, perbaikan, dan perawatan AC.</p>
-                <PrimaryButton>Baca Selengkapnya</PrimaryButton>
+                <Link to="/about"><PrimaryButton>Baca Selengkapnya</PrimaryButton></Link>
             </div>
             <div className={`${classes.imgContainer}`}>
                 <img src={AboutImage} alt="About US"></img>

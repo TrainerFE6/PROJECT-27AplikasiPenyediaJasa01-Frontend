@@ -13,6 +13,7 @@ const DashboardPage = () => {
         <SidebarItem>
           <SidebarLink to="/dashboard">Dashboard</SidebarLink>
           <SidebarDropdown>
+            <SidebarLink to="/dashboard/admin">Admin</SidebarLink>
             <SidebarLink to="/dashboard/tambah-layanan">Tambah Layanan</SidebarLink>
             <SidebarLink to="/dashboard/tambah-teknisi">Tambah Teknisi</SidebarLink>
             <SidebarLink to="/dashboard/kelola-user">Kelola User</SidebarLink>
