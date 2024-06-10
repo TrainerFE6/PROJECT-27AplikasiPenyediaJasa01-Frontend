@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import LocationDropdown from '../components/LocationDropdown';
@@ -6,11 +6,15 @@ import CategoryDropdown from '../components/CategoryDropdown';
 import classes from './CatalogProduct.module.css';
 import LayananCard from '../components/LayananCard';
 import Footer from './SectionPage/Footers';
+import { AuthContext } from '../AuthContext';
+
 
 const CatalogProduct = () => {
   const [dataLayanan, setDataLayanan] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
+  const { isLoggedIn } = useContext(AuthContext);
+
 
   useEffect(() => {
     axios.get('http://localhost:5000/kategori')
@@ -37,7 +41,7 @@ const CatalogProduct = () => {
     );
   });
 
-  const baseURL = 'http://localhost:5000'; // Base URL backend Anda
+  const baseURL = 'http://localhost:5000';
 
   return (
     <>
@@ -68,12 +72,13 @@ const CatalogProduct = () => {
               title={layanan.judul}
               location={layanan.lokasi}
               price={parseInt(layanan.harga, 10).toLocaleString('de-DE')}
+              isLoggedIn={isLoggedIn} // Pass isLoggedIn to LayananCard
             />
           ))}
         </div>
       </div>
 
-    <Footer></Footer>
+      <Footer />
     </>
   );
 }

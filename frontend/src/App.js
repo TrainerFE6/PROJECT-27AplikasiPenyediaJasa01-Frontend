@@ -17,6 +17,7 @@ import TambahAdmin from "./Admin/AddAdmin";
 
 import LayananDetail from './pages/LayananDetail'; // Halaman detail
 
+import { AuthProvider } from "./AuthContext";
 // import './App.css';
 import LoginAdmin from "./LoginRegister/LoginAdmin";
 import SignupAdmin from "./LoginRegister/SignupAdmin";
@@ -24,6 +25,7 @@ import SignupAdmin from "./LoginRegister/SignupAdmin";
 
 function App() {
   return (
+    <AuthProvider>
     <Router>
       <div className="App">
         <Routes>
@@ -48,6 +50,8 @@ function App() {
         </Routes>
       </div>
     </Router>
+
+    </AuthProvider>
   );
 }
 
