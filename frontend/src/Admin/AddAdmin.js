@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { StyledTambahTeknisi } from "./StyledAddTeknisi";
 import classes from './AddAdmin.module.css';
-import FormAdmin from '../components/FormAdmin';
+import { Link } from 'react-router-dom';
 
 
 
@@ -52,8 +52,9 @@ const TambahAdmin = () => {
   return (
     <StyledTambahTeknisi>
       <h1>Tambah Admin</h1>
-      {!show && <button onClick={handleShow} className={classes.buttonEdit}>Tambah Admin Baru</button>}
-      {show && <FormAdmin />}
+      <Link to="/signupadmin">
+      <button className={classes.buttonEdit}>Tambah Admin Baru</button>
+      </Link>
 
       <table className={classes.table}>
         <thead>

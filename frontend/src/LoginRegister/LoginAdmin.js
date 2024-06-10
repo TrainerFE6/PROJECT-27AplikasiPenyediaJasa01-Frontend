@@ -1,38 +1,49 @@
-import React from 'react'
-// import "./style/loginsignup.css"
-import { Link } from 'react-router-dom'
+//
+
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+function AdminLogin() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const response = await fetch('http://localhost:8080/auth/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      navigate('/dashboard');
+    } else {
+      alert(data.error);
+    }
+  };
 
-function LoginAdmin() {
   return (
-    <div className=' template d-flex justify-content-center align-items-center vh-100' style={{ backgroundColor: '#1D204F' }}>
+    <div className='template d-flex justify-content-center align-items-center vh-100' style={{ backgroundColor: '#1D204F' }}>
         <div className='signin p-5 rounded bg-white'>
-        <form>
-            <h3 className='text-center'>Sign In Admin</h3>
+        <form onSubmit={handleLogin}>
+            <h3 className='text-center'>Admin Sign In</h3>
             <div className='mb-2'>
-                {/* <label htmlFor='email'>Email</label> */}
-                <input type="email" placeholder='Masukan Email' className='form-control'/>
+                <input type="email" placeholder='Enter Email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} required/>
             </div>
             <div className='mb-2'>
-                {/* <label htmlFor='password'>Password</label> */}
-                <input type="password" placeholder='Masukan Password' className='form-control'/>
+                <input type="password" placeholder='Enter Password' className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} required/>
             </div>
-            {/* <div className='text- mt-2 mb-2 '>
-                Forget <a href="" className='text-decoration-none'>Password?</a> 
-            </div> */}
             <div className='d-grid'>
-                <Link to="/" className='d-grid text-decoration-none'><button className='btn btn-primary'style={{ backgroundColor: '#1D204F' }}>Login</button></Link>
-            </div>
-            <div className='text- mt-2'>
-                Belum punya akun? <Link to="/signupadmin" className='ms-2 text-decoration-none'>Sign up</Link>
+                <button type='submit' className='btn btn-primary' style={{ backgroundColor: '#1D204F' }}>Login</button>
             </div>
             
         </form>
         </div>
     </div>
-  )
+  );
 }
 
-export default LoginAdmin
+export default AdminLogin;

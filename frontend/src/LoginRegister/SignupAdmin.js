@@ -1,113 +1,77 @@
+//
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-function SignupAdmin() {
+function AdminSignUp() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     alamat: '',
     no_hp: '',
-    role: '',
+    role: '' 
   });
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Kirim data sign up ke backend atau lakukan validasi di sini
-    console.log(formData);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const response = await fetch('http://localhost:8080/auth/admin/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    const data = await response.json();
+    if (response.ok) {
+      navigate('/LoginAdmin');
+    } else {
+      alert(data.error);
+    }
   };
 
   return (
-    <div className=' template d-flex justify-content-center align-items-center vh-100' style={{ backgroundColor: '#1D204F' }}>
-      <div className='p-5 rounded bg-white'>
-        <h2 className='text-center'>Sign Up  Admin</h2>
-      <form onSubmit={handleSubmit}>
-        <div className='mb-2'>
-          {/* <label htmlFor="username">Username:</label> */}
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder='username'
-            value={formData.username}
-            onChange={handleInputChange}
-            className='form-control'
-          />
-        </div>
-        <div className='mb-2'>
-          {/* <label htmlFor="email">Email:</label> */}
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder='email'
-            value={formData.email}
-            onChange={handleInputChange}
-            className='form-control'
-          />
-        </div>
-        <div className='mb-2'>
-          {/* <label htmlFor="password">Password:</label> */}
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder='password'
-            value={formData.password}
-            onChange={handleInputChange}
-            className='form-control'
-          />
-        </div>
-        <div className='mb-2'>
-          {/* <label htmlFor="alamat">alamat:</label> */}
-          <input
-            type="text"
-            id="alamat"
-            name="alamat"
-            placeholder='alamat'
-            value={formData.alamat}
-            onChange={handleInputChange}
-            className='form-control'
-          />
-        </div>
-        <div className='mb-2'>
-          {/* <label htmlFor="no_hp"</label> */}
-          <input
-            type="tel"
-            id="no_hp"
-            name="no_hp"
-            placeholder='no_hp'
-            value={formData.phoneNumber}
-            onChange={handleInputChange}
-            className='form-control'
-          />
-        </div>
-        <div className='mb-2'>
-          {/* <label htmlFor="role">Role:</label> */}
-          <select
-            id="role"
-            name="role"
-            value={formData.role}
-            onChange={handleInputChange}
-            className='form-control'>
-
-            <option value="admin">admin</option>
-            <option value="superadmin">superadmin</option>
-          </select>
-        </div>
-        <div className='d-grid'>
-            <Link to="/loginadmin" className='d-grid text-decoration-none'><button className='btn btn-primary'style={{ backgroundColor: '#1D204F' }}>Daftar</button></Link>
-            </div>
-      </form>
+    <div className='template d-flex justify-content-center align-items-center vh-100' style={{ backgroundColor: '#1D204F' }}>
+      <div className='signin p-5 rounded bg-white'>
+        <form onSubmit={handleRegister}>
+          <h3 className='text-center'>Admin Sign Up</h3>
+          <div className='mb-2'>
+            <input type="text" placeholder='Enter Username' name="username" className='form-control' value={formData.username} onChange={handleInputChange} required />
+          </div>
+          <div className='mb-2'>
+            <input type="email" placeholder='Enter Email' name="email" className='form-control' value={formData.email} onChange={handleInputChange} required />
+          </div>
+          <div className='mb-2'>
+            <input type="password" placeholder='Enter Password' name="password" className='form-control' value={formData.password} onChange={handleInputChange} required />
+          </div>
+          <div className='mb-2'>
+            <input type="text" placeholder='Enter Address' name="alamat" className='form-control' value={formData.alamat} onChange={handleInputChange} required />
+          </div>
+          <div className='mb-2'>
+            <input type="text" placeholder='Enter Phone Number' name="no_hp" className='form-control' value={formData.no_hp} onChange={handleInputChange} required />
+          </div>
+          <div className='mb-2'>
+            <select name="role" className='form-control' value={formData.role} onChange={handleInputChange} required>
+              <option value="">-- Pilih Role --</option>
+              <option value="admin">Admin</option>
+              <option value="superadmin">Superadmin</option>
+            </select>
+          </div>
+          <div className='d-grid'>
+            <button type='submit' className='btn btn-primary' style={{ backgroundColor: '#1D204F' }}>Sign Up</button>
+          </div>
+          <div className='text-center mt-2'>
+            Already have an account? <Link to="/admin/login" className='ms-2 text-decoration-none'>Sign In</Link>
+          </div>
+        </form>
       </div>
     </div>
   );
 }
 
-export default SignupAdmin;
+export default AdminSignUp;
