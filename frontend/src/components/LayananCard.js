@@ -37,7 +37,7 @@ function LayananCard(props) {
       {showPopup && (
         <div className={classes.popupOverlay}>
           <div className={classes.popupContent}>
-            <p>Anda harus login untuk memesan layanan ini.</p>
+            <p>Login terlebih dahulu untuk memesan layanan ini.</p>
             <button onClick={handleClosePopup}>Tutup</button>
           </div>
         </div>

@@ -17,13 +17,23 @@ function AdminLogin() {
       body: JSON.stringify({ email, password })
     });
     const data = await response.json();
+    console.log('API Response:', data); // Debugging: log respons dari API
+
+
     if (response.ok) {
       localStorage.setItem('token', data.token);
+      localStorage.setItem('role', data.admin.role); // Menyimpan peran pengguna
+      localStorage.setItem('username', data.admin.username); // Menyimpan peran pengguna
+      console.log('Logged in as:', data.admin.role); // Debugging: memastikan peran disimpan dengan benar
+
       navigate('/dashboard');
+      window.location.reload(); // Refresh halaman setelah navigasi
+
     } else {
       alert(data.error);
     }
   };
+  
 
   return (
     <div className='template d-flex justify-content-center align-items-center vh-100' style={{ backgroundColor: '#1D204F' }}>

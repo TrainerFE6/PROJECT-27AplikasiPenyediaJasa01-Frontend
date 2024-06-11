@@ -23,7 +23,9 @@ import LoginAdmin from "./LoginRegister/LoginAdmin";
 import SignupAdmin from "./LoginRegister/SignupAdmin";
 
 
+
 function App() {
+  const role = localStorage.getItem("role"); // Mendapatkan peran dari localStorage
   return (
     <AuthProvider>
     <Router>
@@ -38,6 +40,7 @@ function App() {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/testapi" element={<TestAPI />} />
           <Route path="/layanan/:id" element={<LayananDetail />} /> {/* Rute untuk halaman detail */}
+          {(role === "superadmin" || role === "admin") && (
           <Route path="/dashboard/*" element={<DashboardPage />}>
             <Route path="" element={<Dashboard />} />
             <Route path="admin" element={<TambahAdmin />} />
@@ -47,6 +50,8 @@ function App() {
             <Route path="tambah-layanan" element={<TambahLayanan />} />
             <Route path="tambah-teknisi" element={<TambahTeknisi />} />
           </Route>
+                 )}
+
         </Routes>
       </div>
     </Router>

@@ -1,27 +1,65 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Sidebar, SidebarItem, SidebarDropdown, SidebarLink, Container, Content, UserProfile, UserName } from "./StyledApp";
+import {
+  Sidebar,
+  SidebarItem,
+  SidebarDropdown,
+  SidebarLink,
+  Container,
+  Content,
+  UserProfile,
+  UserName,
+} from "./StyledApp";
+import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
+  const role = localStorage.getItem("role"); // Mendapatkan peran dari localStorage
+  const username = localStorage.getItem("username"); // Mendapatkan peran dari localStorage
+  console.log("User Role:", role); // Menambahkan log untuk memverifikasi peran yang diambil
+  console.log("User Role:", username); // Menambahkan log untuk memverifikasi peran yang diambil
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
+    navigate("/login"); // Ganti dengan rute halaman login Anda
+  };
+
   return (
-    <Container> 
+    <Container>
       <Sidebar>
         <UserProfile>
           <img src="https://via.placeholder.com/50" alt="Profile" />
-          <UserName>Nama User</UserName>
+          <UserName>{username}</UserName>
         </UserProfile>
         <SidebarItem>
-          <SidebarLink to="/dashboard">Dashboard</SidebarLink>
           <SidebarDropdown>
-            <SidebarLink to="/dashboard/admin">Admin</SidebarLink>
-            <SidebarLink to="/dashboard/tambah-layanan">Tambah Layanan</SidebarLink>
-            <SidebarLink to="/dashboard/tambah-teknisi">Tambah Teknisi</SidebarLink>
-            <SidebarLink to="/dashboard/kelola-user">Kelola User</SidebarLink>
-            <SidebarLink to="/dashboard/pesanan">Pesanan</SidebarLink>
+            {(role === "superadmin" || role === "admin") && (
+              <>
+              <SidebarLink to="/dashboard">Dashboard</SidebarLink>
+                <SidebarLink to="/dashboard/tambah-layanan">
+                  Tambah Layanan
+                </SidebarLink>
+                <SidebarLink to="/dashboard/tambah-teknisi">
+                  Tambah Teknisi
+                </SidebarLink>
+                <SidebarLink to="/dashboard/pesanan">Pesanan</SidebarLink>
+                <button onClick={handleLogout} className="btn btn-danger">
+                  Logout
+                </button>
+              </>
+            )}
+            {role === "superadmin" && (
+              <>
+                <SidebarLink to="/dashboard/admin">Admin</SidebarLink>
+                <SidebarLink to="/dashboard/kelola-user">
+                  Kelola User
+                </SidebarLink>
+              </>
+            )}
           </SidebarDropdown>
-        </SidebarItem>
-        <SidebarItem>
-          <SidebarLink to="/dashboard/about-us">About Us</SidebarLink>
         </SidebarItem>
       </Sidebar>
       <Content>
@@ -29,6 +67,7 @@ const DashboardPage = () => {
       </Content>
     </Container>
   );
+  
 };
 
 export default DashboardPage;

@@ -4,13 +4,11 @@ import { StyledTambahTeknisi } from "./StyledAddTeknisi";
 import classes from './AddAdmin.module.css';
 import { Link } from 'react-router-dom';
 
-
-
 const TambahAdmin = () => {
   const [dataAdmin, setDataAdmin] = useState([]);
   const [show, setShow] = useState(false);
   const [showDetails, setShowDetails] = useState(null);
-
+  
   useEffect(() => {
     // Fetch admin data from the server
     axios.get('http://localhost:5000/admin')

@@ -1,27 +1,33 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { PrimaryButton, SecondaryButton } from './Button';
-import { FaBars } from "react-icons/fa";
+import React, { useState, useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FaBars, FaSignOutAlt } from 'react-icons/fa';
+import { AuthContext } from '../AuthContext';
 import classes from './Navbar.module.css';
 import jasaku from '../assets/jasaku.png';
-import { AuthContext } from '../AuthContext';
+import { PrimaryButton, SecondaryButton } from './Button';
 
 const Navbar = () => {
     const [toggle, setToggle] = useState(false);
     const location = useLocation();
-    const { isLoggedIn } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const { isLoggedIn, user, logout } = useContext(AuthContext);
+    const [showLogout, setShowLogout] = useState(false);
 
-    useEffect(() => {
-        console.log("Current location:", location.pathname);
-    }, [location]);
 
     const handleToggle = () => {
         setToggle(!toggle);
-    }
+    };
 
     const getNavLinkClass = (path) => {
         return location.pathname === path ? classes.active : '';
-    }
+    };
+
+    const profileImage = user && user.gambar ? `http://localhost:5000/uploads/${user.gambar}` : jasaku;
+
+    const handleLogout = () => {
+        logout();
+        navigate('/'); // Redirect to login page after logout
+    };
 
     return (
         <div>
@@ -45,7 +51,19 @@ const Navbar = () => {
                 </div>
                 <div className={classes.navbarButton}>
                     {isLoggedIn ? (
-                        <img src={jasaku} alt="Profile" className={classes.profilePicture} />
+                        <div className={classes.profileSection}>
+                        <img
+                            src={profileImage}
+                            alt="Profile"
+                            className={classes.profilePicture}
+                            onClick={() => setShowLogout(!showLogout)}
+                        />
+                        {showLogout && (
+                            <button onClick={handleLogout} className={classes.logoutButton}>
+                                <FaSignOutAlt /> Logout
+                            </button>
+                        )}
+                    </div>
                     ) : (
                         <>
                             <Link to="/signup"><SecondaryButton>Register</SecondaryButton></Link>
@@ -55,9 +73,7 @@ const Navbar = () => {
                 </div>
                 <div className={classes.toggleButton}>
                     <button onClick={handleToggle}>
-                        <p>
-                            <FaBars />
-                        </p>
+                        <FaBars />
                     </button>
                 </div>
             </div>
@@ -76,11 +92,18 @@ const Navbar = () => {
                 </div>
                 <div className={classes.navbarButtonMobile}>
                     {isLoggedIn ? (
-                        <img src={jasaku} alt="Profile" className={classes.profilePicture} />
+                        <>
+                            <Link to="/profile">
+                                <img src={profileImage} alt="Profile" className={classes.profilePicture} />
+                            </Link>
+                            <button onClick={handleLogout} className={classes.logoutButton}>
+                                <FaSignOutAlt /> Logout
+                            </button>
+                        </>
                     ) : (
                         <>
-                            <SecondaryButton>Register</SecondaryButton>
-                            <PrimaryButton>Login</PrimaryButton>
+                            <Link to="/signup"><SecondaryButton>Register</SecondaryButton></Link>
+                            <Link to="/login"><PrimaryButton>Login</PrimaryButton></Link>
                         </>
                     )}
                 </div>

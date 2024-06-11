@@ -26,6 +26,9 @@
     font-weight: 600;
     
 }
+.active{
+    color: #3EB492 !important;
+}
 
 .noUnderline{
     text-decoration: none;
@@ -61,6 +64,13 @@
     cursor: pointer;
   }
   
+.logoutButton{
+    border: none;
+    padding: 8px 12px;
+    border-radius: 16px;
+    background-color: red;
+    color: white;
+}
 
 /* Mobile */
 .navMobile{

@@ -112,7 +112,20 @@ router.post('/admin/login', async (req, res) => {
         // Generate JWT
         const token = jwt.sign({ id: admin.id_admin, role: admin.role }, JWT_SECRET, { expiresIn: '1h' });
 
-        res.json({ token });
+        // res.json({ token });
+
+        // Ku Ubah di bawah
+        res.json({
+            token,
+            admin: {
+                id: admin.id_admin,
+                username: admin.username,
+                email: admin.email,
+                alamat: admin.alamat,
+                no_hp: admin.no_hp,
+                role: admin.role
+            }
+        });
     } catch (error) {
         console.error('Error logging in admin:', error.message);
         res.status(500).json({ error: 'Internal server error' });
