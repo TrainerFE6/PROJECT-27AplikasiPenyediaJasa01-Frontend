@@ -38,7 +38,7 @@ const DashboardPage = () => {
           <SidebarDropdown>
             {(role === "superadmin" || role === "admin") && (
               <>
-              <SidebarLink to="/dashboard">Dashboard</SidebarLink>
+                <SidebarLink to="/dashboard">Dashboard</SidebarLink>
                 <SidebarLink to="/dashboard/tambah-layanan">
                   Tambah Layanan
                 </SidebarLink>
@@ -46,9 +46,6 @@ const DashboardPage = () => {
                   Tambah Teknisi
                 </SidebarLink>
                 <SidebarLink to="/dashboard/pesanan">Pesanan</SidebarLink>
-                <button onClick={handleLogout} className="btn btn-danger">
-                  Logout
-                </button>
               </>
             )}
             {role === "superadmin" && (
@@ -59,6 +56,11 @@ const DashboardPage = () => {
                 </SidebarLink>
               </>
             )}
+            {(role === "superadmin" || role === "admin") && (
+              <button onClick={handleLogout} className="btn btn-danger">
+                Logout
+              </button>
+            )}
           </SidebarDropdown>
         </SidebarItem>
       </Sidebar>
@@ -67,7 +69,6 @@ const DashboardPage = () => {
       </Content>
     </Container>
   );
-  
 };
 
 export default DashboardPage;

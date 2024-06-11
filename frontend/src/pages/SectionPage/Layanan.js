@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext} from "react";
 import LayananCard from "../../components/LayananCard";
 import ExampleLayanan from "../../assets/ExampleLayanan.png";
+import { AuthContext } from '../../AuthContext';
+
 import { PrimaryButton } from "../../components/Button";
 import classes from "./Layanan.module.css";
 import { Link } from 'react-router-dom';
@@ -39,6 +41,8 @@ const layananData = [
 function Layanan(){
     const control = useAnimation();
     const [ref, inView] = useInView();
+    const { isLoggedIn } = useContext(AuthContext);
+
 
     useEffect(() => {
         if (inView) {
@@ -69,6 +73,8 @@ function Layanan(){
 
             </div>
 
+            
+
             <div className={`${classes.containerLayanan}`}>
                 {layananData.map((layanan, index) => (
                 <LayananCard
@@ -77,6 +83,8 @@ function Layanan(){
                     title={layanan.title}
                     location={layanan.location}
                     price={layanan.price.toLocaleString('de-DE')}
+                    isLoggedIn={isLoggedIn} // Pass isLoggedIn to LayananCard
+
 
                 />
             ))}
