@@ -30,103 +30,132 @@ const getorderId = function (req, res) {
     });
 };
 
+// const createorder = function (req, res) {
+//     let id_admin = req.body.id_admin;
+//     let id_user = req.body.id_user;
+//     let id_teknisi = req.body.id_teknisi;
+//     let id_katagori = req.body.id_katagori;
+//     let tanggal_bayar = req.body.tanggal_bayar;
+//     let tanggal_pelayanan = req.body.tanggal_pelayanan;
+//     let total_harga = req.body.total_harga;
+//     let opsi_pembayaran = req.body.opsi_pembayaran;
+//     // let bukti_pembayaran = req.body.bukti_pembayaran;
+//      let bukti_pembayaran = req.file.filename;
+//     let status = req.body.status;
+//     let errors = false;
+
+//        if(!id_admin) {
+//     errors = true;
+//     res.json({pesan :'Field id_admin belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if(!id_user) {
+//         errors = true;
+//         res.json({pesan :'Field id_user cabang belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if(!id_teknisi) {
+//         errors = true;
+//         res.json({pesan :'Field id_teknisi hp belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if(!id_katagori) {
+//         errors = true;
+//         res.json({pesan :'Field id_katagori hp belum diisi, Field harus diisi dengan lengkap'});
+//     }
+   
+    
+//     if(!tanggal_bayar) {
+//         errors = true;
+//         res.json({pesan :'Field tanggal_bayar belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+    
+    
+    
+//     if(!total_harga) {
+//         errors = true;
+//         res.json({pesan :'Field total_harga belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+    
+//     if(!opsi_pembayaran) {
+//         errors = true;
+//         res.json({pesan :'Field opsi_pembayaran belum diisi, Field harus diisi dengan lengkap'});
+//     }
+
+//     if(!status) {
+//         errors = true;
+//         res.json({pesan :'Field opsi_pembayaran belum diisi, Field harus diisi dengan lengkap'});
+//     }    
+    
+
+
+//     if (!errors) {
+//         let formData = {
+//             id_admin: id_admin,
+//             id_user: id_user,
+//             id_teknisi: id_teknisi,
+//             id_katagori: id_katagori,
+//             tanggal_bayar: tanggal_bayar,
+//             tanggal_pelayanan: tanggal_pelayanan,
+//             total_harga: total_harga,
+//             opsi_pembayaran: opsi_pembayaran,
+//             bukti_pembayaran: bukti_pembayaran,
+//             status: status
+//         };
+
+//         connection.query('INSERT INTO tbl_orders SET ?', formData, function (err, result) {
+//             if (err) {
+//                 res.json({ pesan: 'Data gagal disimpan' });
+//             } else {
+//                 res.send('Data Berhasil Disimpan!');
+//             }
+//         });
+//     }
+// };
 const createorder = function (req, res) {
-    let id_admin = req.body.id_admin;
-    let id_user = req.body.id_user;
-    let id_teknisi = req.body.id_teknisi;
-    let nama_teknisi = req.body.nama_teknisi;
-    let tanggal_bayar = req.body.tanggal_bayar;
-    let tanggal_pembayaran = req.body.tanggal_pembayaran;
-    let total_harga = req.body.total_harga;
-    let opsi_pembayaran = req.body.opsi_pembayaran;
-    let bukti_pembayaran = req.file.filename;
-    let status = req.body.status;
-    let errors = false;
 
-       if(!id_admin) {
-    errors = true;
-    res.json({pesan :'Field id_admin belum diisi, Field harus diisi dengan lengkap'});
-    }
+    console.log('Request body:', req.body);  // Log the entire body to see what is being sent
 
-    if(!id_user) {
-        errors = true;
-        res.json({pesan :'Field id_user cabang belum diisi, Field harus diisi dengan lengkap'});
-    }
+    try {
+        const { id_admin, id_user, id_teknisi, id_katagori, tanggal_bayar, tanggal_pelayanan, total_harga, opsi_pembayaran, status } = req.body;
+        const bukti_pembayaran = req.file ? req.file.filename : null;
 
-    if(!id_teknisi) {
-        errors = true;
-        res.json({pesan :'Field id_teknisi hp belum diisi, Field harus diisi dengan lengkap'});
-    }
+        if (!id_admin || !id_user || !id_teknisi || !id_katagori || !tanggal_bayar || !total_harga || !opsi_pembayaran || !status) {
+            return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
+        }
 
-    if(!nama_teknisi) {
-        errors = true;
-        res.json({pesan :'Field nama_teknisi belum diisi, Field harus diisi dengan lengkap'});
-    }
-
-    
-    if(!tanggal_bayar) {
-        errors = true;
-        res.json({pesan :'Field tanggal_bayar belum diisi, Field harus diisi dengan lengkap'});
-    }
-
-    
-    if(!tanggal_pembayaran) {
-        errors = true;
-        res.json({pesan :'Field tanggal_pembayaran belum diisi, Field harus diisi dengan lengkap'});
-    }
-
-    
-    if(!total_harga) {
-        errors = true;
-        res.json({pesan :'Field total_harga belum diisi, Field harus diisi dengan lengkap'});
-    }
-
-    
-    if(!opsi_pembayaran) {
-        errors = true;
-        res.json({pesan :'Field opsi_pembayaran belum diisi, Field harus diisi dengan lengkap'});
-    }
-
-    if(!status) {
-        errors = true;
-        res.json({pesan :'Field opsi_pembayaran belum diisi, Field harus diisi dengan lengkap'});
-    }    
-    
-
-
-    if (!errors) {
-        let formData = {
-            id_admin: id_admin,
-            id_user: id_user,
-            id_teknisi: id_teknisi,
-            nama_teknisi: nama_teknisi,
-            tanggal_bayar: tanggal_bayar,
-            tanggal_pelayanan: tanggal_pelayanan,
-            total_harga: total_harga,
-            opsi_pembayaran: opsi_pembayaran,
-            bukti_pembayaran: bukti_pembayaran,
-            status: status
+        const formData = {
+            id_admin, id_user, id_teknisi, id_katagori, tanggal_bayar, tanggal_pelayanan, total_harga, opsi_pembayaran, bukti_pembayaran, status
         };
 
         connection.query('INSERT INTO tbl_orders SET ?', formData, function (err, result) {
             if (err) {
-                res.json({ pesan: 'Data gagal disimpan' });
-            } else {
-                res.send('Data Berhasil Disimpan!');
+                console.error('Database error:', err);
+                return res.status(500).json({ success: false, message: 'Data gagal disimpan, terjadi kesalahan di database' });
             }
+            res.status(201).json({ success: true, message: 'Data Berhasil Disimpan!' });
         });
+    } catch (error) {
+        console.error('Server error:', error);
+        res.status(500).json({ success: false, error: 'Terjadi kesalahan server' });
     }
 };
+
+
+
 
 const updateorder = function (req, res) {
     let id_admin = req.body.id_admin;
     let id_user = req.body.id_user;
     let id_teknisi = req.body.id_teknisi;
-    let nama_teknisi = req.body.nama_teknisi;
+
     let tanggal_bayar = req.body.tanggal_bayar;
     let tanggal_pelayanan = req.body.tanggal_pelayanan;
     let total_harga = req.body.total_harga;
-    let opsi_pembayaran = req.body.opsi_pembayaran;
+   
+    // let bukti_pembayaran = req.body.bukti_pembayaran;
     let bukti_pembayaran = req.file.filename;
     let status = req.body.status;
     let errors = false;
@@ -156,7 +185,7 @@ const updateorder = function (req, res) {
             id_admin: id_admin,
             id_user: id_user,
             id_teknisi: id_teknisi,
-            nama_teknisi: nama_teknisi,
+            
             tanggal_bayar: tanggal_bayar,
             tanggal_pelayanan: tanggal_pelayanan,
             total_harga: total_harga,
@@ -217,8 +246,7 @@ const deleteorder = function (req, res) {
 module.exports = {
   getAllorder,
   getorderId,
-  createorder,
+  createorder,  // Ensure this is listed
   updateorder,
   deleteorder
 };
-

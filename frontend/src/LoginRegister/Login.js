@@ -12,6 +12,7 @@ function Login() {
     const { setIsLoggedIn } = useContext(AuthContext);
     const [showPopup, setShowPopup] = useState(false);
 
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -24,6 +25,11 @@ function Login() {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('authToken', data.token);
+                localStorage.setItem('username', data.user.username); // Menyimpan peran pengguna
+                localStorage.setItem('no_hp', data.user.no_hp); 
+                localStorage.setItem('id_user', data.user.id_user); 
+                console.log('Logged in as:', data.user); // Debugging: memastikan peran disimpan dengan benar
+                // Menyimpan peran pengguna
                 setIsLoggedIn(true);
                 navigate('/'); // Redirect after successful login
             } else {

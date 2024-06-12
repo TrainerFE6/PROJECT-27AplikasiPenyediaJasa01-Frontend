@@ -1,106 +1,166 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TambahDataUser = () => {
-    const [userData, setUserData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        gambar: null,
-        alamat: '',
-        no_hp: ''
+const AddOrder = () => {
+  const [orderData, setOrderData] = useState({
+    id_admin: '',
+    id_user: '',
+    id_teknisi: '',
+    id_katagori: '',
+    tanggal_bayar: '',
+    tanggal_pelayanan: '',
+    total_harga: '',
+    opsi_pembayaran: '',
+    status: ''
+  });
+  const [admins, setAdmins] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [teknisi, setTeknisi] = useState([]);
+  const [kategori, setKategori] = useState([]);
+  const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const adminResponse = await axios.get('http://localhost:5000/admin');
+        const userResponse = await axios.get('http://localhost:5000/users');
+        const teknisiResponse = await axios.get('http://localhost:5000/teknisi');
+        const kategoriResponse = await axios.get('http://localhost:5000/kategori');
+        setAdmins(adminResponse.data.data);
+        setUsers(userResponse.data.data);
+        setTeknisi(teknisiResponse.data.data);
+        setKategori(kategoriResponse.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setOrderData({
+      ...orderData,
+      [name]: value
     });
+  };
 
-    const handleChange = (e) => {
-        setUserData({
-            ...userData,
-            [e.target.name]: e.target.value
-        });
-        console.log('Data setelah input berubah:', userData);
-    };
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setUserData({
-            ...userData,
-            gambar: file
-        });
-        console.log('Gambar yang dipilih:', file);
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('id_admin', orderData.id_admin);
+    formData.append('id_user', orderData.id_user);
+    formData.append('id_teknisi', orderData.id_teknisi);
+    formData.append('id_katagori', orderData.id_katagori);
+    formData.append('tanggal_bayar', orderData.tanggal_bayar);
+    formData.append('tanggal_pelayanan', orderData.tanggal_pelayanan);
+    formData.append('total_harga', orderData.total_harga);
+    formData.append('opsi_pembayaran', orderData.opsi_pembayaran);
+    formData.append('status', orderData.status);
+    if (file) {
+      formData.append('bukti_pembayaran', file);
+    }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('Data sebelum dikirim:', userData);
+    console.log('FormData yang dikirim:');
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
 
-        if (!userData.gambar) {
-            console.error('Gambar harus dipilih');
-            alert('Gambar harus dipilih');
-            return;
+    try {
+      const response = await axios.post('http://localhost:5000/order', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
+      });
+      console.log('Response dari server:', response.data);
+    } catch (error) {
+      console.error('Terjadi kesalahan saat menambahkan data:', error);
+      if (error.response) {
+        console.error('Data error:', error.response.data);
+        console.error('Status error:', error.response.status);
+        console.error('Header error:', error.response.headers);
+      }
+    }
+  };
 
-        const formData = new FormData();
-        formData.append('username', userData.username);
-        formData.append('email', userData.email);
-        formData.append('password', userData.password);
-        formData.append('gambar', userData.gambar);
-        formData.append('alamat', userData.alamat);
-        formData.append('no_hp', userData.no_hp);
-
-        try {
-            console.log('Mengirim data...');
-            const response = await axios.post('http://localhost:5000/users', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            console.log('Server response:', response.data);
-            alert('Data berhasil ditambahkan!');
-            setUserData({
-                username: '',
-                email: '',
-                password: '',
-                gambar: null,
-                alamat: '',
-                no_hp: ''
-            });
-        } catch (error) {
-            console.error('Error saat mengirim data:', error);
-            alert('Terjadi kesalahan saat menambahkan data.');
-        }
-    };
-
-    return (
-        <div>
-            <h2>Tambah Data User</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>username:</label>
-                    <input type="text" name="username" value={userData.username} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" name="email" value={userData.email} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password" value={userData.password} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>Gambar:</label>
-                    <input type="file" name="gambar" onChange={handleFileChange} required />
-                </div>
-                <div>
-                    <label>Alamat:</label>
-                    <input type="text" name="alamat" value={userData.alamat} onChange={handleChange} />
-                </div>
-                <div>
-                    <label>No HP:</label>
-                    <input type="text" name="no_hp" value={userData.no_hp} onChange={handleChange} />
-                </div>
-                <button type="submit">Tambah Data User</button>
-            </form>
-        </div>
-    );
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        ID Admin:
+        <select name="id_admin" value={orderData.id_admin} onChange={handleChange} required>
+          <option value="">Pilih Admin</option>
+          {admins.map(admin => (
+            <option key={admin.id_admin} value={admin.id_admin}>
+              {admin.username}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        ID User:
+        <select name="id_user" value={orderData.id_user} onChange={handleChange} required>
+          <option value="">Pilih User</option>
+          {users.map(user => (
+            <option key={user.id_user} value={user.id_user}>
+              {user.username}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        ID Teknisi:
+        <select name="id_teknisi" value={orderData.id_teknisi} onChange={handleChange} required>
+          <option value="">Pilih Teknisi</option>
+          {teknisi.map(tech => (
+            <option key={tech.id_teknisi} value={tech.id_teknisi}>
+              {tech.nama}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        ID Kategori:
+        <select name="id_katagori" value={orderData.id_katagori} onChange={handleChange} required>
+          <option value="">Pilih Kategori</option>
+          {kategori.map(cat => (
+            <option key={cat.id_katagori} value={cat.id_katagori}>
+              {cat.nama_katagori}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Tanggal Bayar:
+        <input type="datetime-local" name="tanggal_bayar" value={orderData.tanggal_bayar} onChange={handleChange} required />
+      </label>
+      <label>
+        Tanggal Pelayanan:
+        <input type="datetime-local" name="tanggal_pelayanan" value={orderData.tanggal_pelayanan} onChange={handleChange} required />
+      </label>
+      <label>
+        Total Harga:
+        <input type="text" name="total_harga" value={orderData.total_harga} onChange={handleChange} required />
+      </label>
+      <label>
+        Opsi Pembayaran:
+        <input type="text" name="opsi_pembayaran" value={orderData.opsi_pembayaran} onChange={handleChange} required />
+      </label>
+      <label>
+        Bukti Pembayaran:
+        <input type="file" name="bukti_pembayaran" onChange={handleFileChange} required />
+      </label>
+      <label>
+        Status:
+        <input type="text" name="status" value={orderData.status} onChange={handleChange} required />
+      </label>
+      <button type="submit">Tambah Order</button>
+    </form>
+  );
 };
 
-export default TambahDataUser;
+export default AddOrder;

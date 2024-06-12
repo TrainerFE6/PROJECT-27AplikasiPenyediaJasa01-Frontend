@@ -1,20 +1,17 @@
+// LayananDetail.js
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-// import "../style/pembelian.css"
-import { Link } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom';
 import classes from './LayananDetail.module.css';
 import { FaLocationDot } from "react-icons/fa6";
 import Navbar from '../components/Navbar';
 
-
-
 const LayananDetail = () => {
   const location = useLocation();
-  const { imageLayanan, title, location: layananLocation, price } = location.state || {};
+  const { id, imageLayanan, title, location: layananLocation, price } = location.state || {};
 
   return (
     <div>
-      <Navbar></Navbar>
+      <Navbar />
       <div className={classes.product}>
         <h1 className='mb-3'>{title}</h1>
         <div className={classes.imageProduct}>
@@ -24,7 +21,9 @@ const LayananDetail = () => {
         <p className={classes.lokasi}><span><FaLocationDot /></span> {layananLocation}</p>
         <p className={classes.deskripsi}>Layanan jasa pembersihan AC secara umum, isi ulang freon untuk R-22 dan R-410, perbaikan kebocoran freon, AC berisik, dan masalah lainnya pada AC. Layanan ini tersedia untuk semua jenis dan merek unit AC. Tersedia garansi hingga 30 hari setelah waktu pengerjaan.</p>
         
-        <Link to="/formpembelian" className='d-grid text-decoration-none'><button className='btn btn-primary'style={{ backgroundColor: '#1D204F' }}>Beli Sekarang</button></Link>
+        <Link to={`/formpembelian/`} className='d-grid text-decoration-none' state={{ id, title, price }}>
+          <button className='btn btn-primary' style={{ backgroundColor: '#1D204F' }}>Beli Sekarang</button>
+        </Link>
       </div>
     </div>
   );

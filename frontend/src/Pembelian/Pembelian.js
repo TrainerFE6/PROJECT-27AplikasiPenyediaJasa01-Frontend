@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import './Pembelian.css';
+
 
 function FormPembelian() {
   const [jenisLayanan, setJenisLayanan] = useState('');

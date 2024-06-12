@@ -18,8 +18,8 @@ var upload = multer({ storage: storage });
 // Routes
 router.get('/', order.getAllorder);
 router.get('/:id',order.getorderId);
-router.post('/', upload.single('gambar'), order.createorder);
-router.put('/:id', upload.single('gambar'), order.updateorder);
+router.post('/', upload.single('bukti_pembayaran'), order.createorder);
+router.put('/:id', upload.single('bukti_pembayaran'), order.updateorder);
 router.delete('/:id', order.deleteorder);
 
 module.exports = router;
