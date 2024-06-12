@@ -22,7 +22,7 @@ import { AuthProvider } from "./AuthContext";
 import LoginAdmin from "./LoginRegister/LoginAdmin";
 import SignupAdmin from "./LoginRegister/SignupAdmin";
 import Pembelian from "./Pembelian/Pembelian";
-import Pembayaran from "./Pembelian/Pembayaran";
+
 
 
 
@@ -42,7 +42,7 @@ function App() {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/testapi" element={<TestAPI />} />
           <Route path="/formpembelian" element={<Pembelian />} />
-          <Route path="/formpembayaran" element={<Pembayaran />} />
+          
           <Route path="/layanan/:id" element={<LayananDetail />} /> {/* Rute untuk halaman detail */}
           {(role === "superadmin" || role === "admin") && (
           <Route path="/dashboard/*" element={<DashboardPage />}>

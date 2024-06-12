@@ -114,20 +114,59 @@ const getorderId = function (req, res) {
 //         });
 //     }
 // };
-const createorder = function (req, res) {
+// const createorder = function (req, res) {
 
-    console.log('Request body:', req.body);  // Log the entire body to see what is being sent
+//     console.log('Request body:', req.body);  // Log the entire body to see what is being sent
+
+//     try {
+        
+//         const { id_admin, id_user, id_teknisi, id_katagori, tanggal_bayar, tanggal_pelayanan, total_harga, opsi_pembayaran, status } = req.body;
+//         const bukti_pembayaran = req.file ? req.file.filename : null;
+
+//         if (!id_admin || !id_user || !id_teknisi || !id_katagori || !tanggal_bayar || !total_harga || !opsi_pembayaran || !status) {
+//             return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
+//         }
+
+//         const formData = {
+//             id_admin, id_user, id_teknisi, id_katagori, tanggal_bayar, tanggal_pelayanan, total_harga, opsi_pembayaran, bukti_pembayaran, status
+//         };
+
+//         connection.query('INSERT INTO tbl_orders SET ?', formData, function (err, result) {
+//             if (err) {
+//                 console.error('Database error:', err);
+//                 return res.status(500).json({ success: false, message: 'Data gagal disimpan, terjadi kesalahan di database' });
+//             }
+//             res.status(201).json({ success: true, message: 'Data Berhasil Disimpan!' });
+//         });
+//     } catch (error) {
+//         console.error('Server error:', error);
+//         res.status(500).json({ success: false, error: 'Terjadi kesalahan server' });
+//     }
+// };
+
+const createorder = function (req, res) {
+    console.log('Request body:', req.body);
 
     try {
         const { id_admin, id_user, id_teknisi, id_katagori, tanggal_bayar, tanggal_pelayanan, total_harga, opsi_pembayaran, status } = req.body;
         const bukti_pembayaran = req.file ? req.file.filename : null;
 
-        if (!id_admin || !id_user || !id_teknisi || !id_katagori || !tanggal_bayar || !total_harga || !opsi_pembayaran || !status) {
+        // Modify validation to allow id_admin and id_teknisi to be null
+        if (!id_user || !id_katagori || !tanggal_bayar || !total_harga || !opsi_pembayaran || !status) {
             return res.status(400).json({ success: false, message: 'Semua field harus diisi' });
         }
 
         const formData = {
-            id_admin, id_user, id_teknisi, id_katagori, tanggal_bayar, tanggal_pelayanan, total_harga, opsi_pembayaran, bukti_pembayaran, status
+            id_admin: id_admin || null, // Set to null if id_admin is not provided
+            id_user: id_user,
+            id_teknisi: id_teknisi || null, // Set to null if id_teknisi is not provided
+            id_katagori: id_katagori,
+            tanggal_bayar: tanggal_bayar,
+            tanggal_pelayanan: tanggal_pelayanan,
+            total_harga: total_harga,
+            opsi_pembayaran: opsi_pembayaran,
+            bukti_pembayaran: bukti_pembayaran,
+            status: status
         };
 
         connection.query('INSERT INTO tbl_orders SET ?', formData, function (err, result) {
@@ -142,7 +181,6 @@ const createorder = function (req, res) {
         res.status(500).json({ success: false, error: 'Terjadi kesalahan server' });
     }
 };
-
 
 
 
