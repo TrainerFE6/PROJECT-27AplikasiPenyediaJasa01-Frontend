@@ -67,7 +67,7 @@ const CatalogProduct = () => {
           {filteredLayanan.map((layanan) => (
             <LayananCard
               key={layanan.id_katagori}
-              id={layanan.id_katagori}
+              id_katagori={layanan.id_katagori}
               imageLayanan={`${baseURL}/uploads/catagori/${layanan.gambar}`}
               title={layanan.judul}
               location={layanan.lokasi}

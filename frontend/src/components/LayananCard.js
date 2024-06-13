@@ -6,13 +6,13 @@ import { FaLocationDot } from "react-icons/fa6";
 import { PurchaseButton } from "./Button";
 
 function LayananCard(props) {
-  const { id, imageLayanan, title, location, price, isLoggedIn } = props;
+  const { id_katagori, imageLayanan, title, location, price, isLoggedIn } = props;
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
 
   const handleCardClick = () => {
     if (isLoggedIn) {
-      navigate(`/layanan/${id}`, { state: { id, imageLayanan, title, location, price } });
+      navigate(`/layanan/${id_katagori}`, { state: { id_katagori, imageLayanan, title, location, price } });
     } else {
       setShowPopup(true);
     }

@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 
 const LayananDetail = () => {
   const location = useLocation();
-  const { id, imageLayanan, title, location: layananLocation, price } = location.state || {};
+  const { id_katagori, imageLayanan, title, location: layananLocation, price } = location.state || {};
 
   return (
     <div>
@@ -21,7 +21,7 @@ const LayananDetail = () => {
         <p className={classes.lokasi}><span><FaLocationDot /></span> {layananLocation}</p>
         <p className={classes.deskripsi}>Layanan jasa pembersihan AC secara umum, isi ulang freon untuk R-22 dan R-410, perbaikan kebocoran freon, AC berisik, dan masalah lainnya pada AC. Layanan ini tersedia untuk semua jenis dan merek unit AC. Tersedia garansi hingga 30 hari setelah waktu pengerjaan.</p>
         
-        <Link to={`/formpembelian/`} className='d-grid text-decoration-none' state={{ id, title, price }}>
+        <Link to={`/formpembelian/`} className='d-grid text-decoration-none' state={{ id_katagori, price, title }}>
           <button className='btn btn-primary' style={{ backgroundColor: '#1D204F' }}>Beli Sekarang</button>
         </Link>
       </div>
