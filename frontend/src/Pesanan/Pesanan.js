@@ -171,7 +171,7 @@ const Pesanan = () => {
           </div>
         )}
       </div>
-      <table>
+      <table >
         <thead>
           <tr>
             <th>ID Pesanan</th>

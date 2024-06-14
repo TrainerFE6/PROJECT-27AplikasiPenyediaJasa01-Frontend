@@ -11,7 +11,7 @@ input {
   border: 1px solid gray;
 }
 
-.inputLayanan {
+.inputPesanan {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -49,6 +49,7 @@ input {
   padding: 5px 16px;
   color: white;
   border-radius: 14px;
+  
 }
 
 .buttonEdit:hover {
@@ -85,7 +86,7 @@ th, td {
   color: white;
 }
 
-.data-image-layanan img{
+.data-image-pesanan img{
   width: 50px;
   height: 50px;
 }

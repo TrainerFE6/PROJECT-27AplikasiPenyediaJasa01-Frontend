@@ -84,128 +84,292 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import classes from './FormAdmin.module.css'; // Assume you have this CSS file
+import { useNavigate } from 'react-router-dom';
 
-const FormAdmin = () => {
+const FormAdmin = ({ newAdmin, setNewAdmin, handleTutup }) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    gambar: null,
     alamat: '',
     no_hp: '',
-    role: ''
+    role: '',
+    gambar: null,
   });
-  const [admins, setAdmins] = useState([]);
-  const [editing, setEditing] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+
+  const [isFormVisible, setIsFormVisible] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    fetchAdmins();
-  }, []);
-
-  const fetchAdmins = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/admin');
-      setAdmins(response.data.data);
-    } catch (error) {
-      console.error('Error fetching admins:', error);
+    if (newAdmin.id_admin) {
+      setFormData({
+        username: newAdmin.username,
+        email: newAdmin.email,
+        password: '',
+        alamat: newAdmin.alamat,
+        no_hp: newAdmin.no_hp,
+        role: newAdmin.role,
+        gambar: null,
+      });
     }
-  };
+  }, [newAdmin]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleFileChange = (e) => {
     setFormData(prevData => ({
       ...prevData,
-      gambar: e.target.files[0]
+      gambar: e.target.files[0],
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    for (let key in formData) {
-      data.append(key, formData[key]);
+    data.append('username', formData.username);
+    data.append('email', formData.email);
+    data.append('alamat', formData.alamat);
+    data.append('no_hp', formData.no_hp);
+    data.append('role', formData.role);
+    if (formData.gambar) {
+      data.append('gambar', formData.gambar);
     }
 
     try {
-      if (editing) {
-        await axios.put(`http://localhost:5000/admin/${currentId}`, data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+      let response;
+      if (newAdmin.id_admin) {
+        // Update existing admin
+        response = await axios.put(`http://localhost:5000/admin/${newAdmin.id_admin}`, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         });
-        alert('Admin updated successfully!');
       } else {
-        await axios.post('http://localhost:5000/admin', data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+        // Create new admin
+        response = await axios.post('http://localhost:5000/admin', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         });
-        alert('Admin added successfully!');
       }
-      fetchAdmins();
-      setFormData({ username: '', email: '', password: '', gambar: null, alamat: '', no_hp: '', role: '' });
-      setEditing(false);
-      setCurrentId(null);
+      console.log('Response:', response.data);
+      setIsFormVisible(false);
+      setIsSubmitted(true);
+      handleTutup();
+      navigate('/dashboard/admin');
     } catch (error) {
-      console.error('Error submitting data:', error);
-      setErrorMessage('Failed to submit admin data');
-    }
-  };
-
-  const handleEdit = (admin) => {
-    setFormData({
-      username: admin.username,
-      email: admin.email,
-      password: admin.password,
-      gambar: null,
-      alamat: admin.alamat,
-      no_hp: admin.no_hp,
-      role: admin.role
-    });
-    setEditing(true);
-    setCurrentId(admin.id_admin);
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/admin/${id}`);
-      alert('Admin deleted successfully!');
-      fetchAdmins();
-    } catch (error) {
-      console.error('Error deleting admin:', error);
-      setErrorMessage('Failed to delete admin');
+      console.error('Error posting data:', error);
+      setErrorMessage('Gagal mengirim data, coba lagi nanti.');
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
-        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-        <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
-        <input type="file" name="gambar" onChange={handleFileChange} />
-        <input type="text" name="alamat" value={formData.alamat} onChange={handleChange} placeholder="Alamat" />
-        <input type="text" name="no_hp" value={formData.no_hp} onChange={handleChange} placeholder="No HP" />
-        <input type="text" name="role" value={formData.role} onChange={handleChange} placeholder="Role" />
-        <button type="submit">{editing ? 'Update' : 'Submit'}</button>
-      </form>
-      {errorMessage && <p>{errorMessage}</p>}
-      <ul>
-        {admins.map(admin => (
-          <li key={admin.id_admin}>
-            {admin.username} - {admin.email}
-            <button onClick={() => handleEdit(admin)}>Edit</button>
-            <button onClick={() => handleDelete(admin.id_admin)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      {isFormVisible && (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label className={classes.label}>Username:</label>
+            <input type="text" name="username" value={formData.username} onChange={handleChange} />
+          </div>
+          <div>
+            <label className={classes.label}>Email:</label>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} />
+          </div>
+          {!newAdmin.id_admin && (
+            <div>
+              <label className={classes.label}>Password:</label>
+              <input type="password" name="password" value={formData.password} onChange={handleChange} />
+            </div>
+          )}
+          <div>
+            <label className={classes.label}>Alamat:</label>
+            <input type="text" name="alamat" value={formData.alamat} onChange={handleChange} />
+          </div>
+          <div>
+            <label className={classes.label}>No HP:</label>
+            <input type="text" name="no_hp" value={formData.no_hp} onChange={handleChange} />
+          </div>
+          <div>
+            <label className={classes.label}>Role:</label>
+            <select type="text" name="role" value={formData.role} onChange={handleChange}>
+            <option value="{formData.role}">{formData.role}</option>
+            <option value="Admin">Admin</option>
+            <option value="Superadmin">Superadmin</option>
+          </select>
+          </div>
+          <div>
+            <label className={classes.label}>Gambar:</label>
+            <input type="file" name="gambar" onChange={handleFileChange} />
+            {newAdmin.gambar && !formData.gambar && (
+              <div className={classes.imagePreview}>
+                <img src={`http://localhost:5000/uploads/admin/${newAdmin.gambar}`} 
+                 alt="Gambar admin"
+                  style={{ width: '100px', height: '100px', marginTop: '10px' }} />
+              </div>
+            )}
+          </div>
+          <button type="submit" className={classes.buttonSubmit}>Submit</button>
+          {errorMessage && <p className={classes.error}>{errorMessage}</p>}
+        </form>
+      )}
+      {isSubmitted && (
+        <>
+          <p>Form submitted successfully!</p>
+        </>
+      )}
+    </>
   );
 };
 
 export default FormAdmin;
+
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import classes from './FormAdmin.module.css';
+// import { useNavigate } from 'react-router-dom';
+
+// const FormAdmin = ({ newAdmin, setNewAdmin, handleTutup }) => {
+//   const navigate = useNavigate();
+
+//   const [formData, setFormData] = useState({
+//     username: '',
+//     role: '',
+//     email: '',
+//     gambar: null,
+//     alamat: '',
+//     no_hp: '',
+//   });
+
+//   const [isFormVisible, setIsFormVisible] = useState(true);
+//   const [isSubmitted, setIsSubmitted] = useState(false);
+//   const [errorMessage, setErrorMessage] = useState('');
+
+//   useEffect(() => {
+//     if (newAdmin.id_admin) {
+//       setFormData({
+//         username: newAdmin.username,
+//         role: newAdmin.role,
+//         email: newAdmin.email,
+//         gambar: null, // Assume the image needs to be re-uploaded if changed
+//         alamat: newAdmin.alamat,
+//         no_hp: newAdmin.no_hp,
+//       });
+//     }
+//   }, [newAdmin]);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData(prevData => ({
+//       ...prevData,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleFileChange = (e) => {
+//     setFormData(prevData => ({
+//       ...prevData,
+//       gambar: e.target.files[0],
+//     }));
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const data = new FormData();
+//     data.append('username', formData.username);
+//     data.append('role', formData.role);
+//     data.append('email', formData.email);
+//     data.append('alamat', formData.alamat);
+//     data.append('no_hp', formData.no_hp);
+//     if (formData.gambar) {
+//       data.append('gambar', formData.gambar);
+//     }
+
+//     try {
+//       let response;
+//       if (newAdmin.id_admin) {
+//         // Update existing admin
+//         response = await axios.put(`http://localhost:5000/admin/${newAdmin.id_admin}`, data, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data',
+//           },
+//         });
+//       } else {
+//         // Create new admin
+//         response = await axios.post('http://localhost:5000/admin', data, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data',
+//           },
+//         });
+//       }
+//       console.log('Response:', response.data);
+//       setIsFormVisible(false);
+//       setIsSubmitted(true);
+//       handleTutup();
+//       navigate('/dashboard/tambah-admin');
+//     } catch (error) {
+//       console.error('Error posting data:', error);
+//       setErrorMessage('Gagal mengirim data, coba lagi nanti.');
+//     }
+//   };
+
+//   return (
+//     <>
+//       {isFormVisible && (
+//         <form onSubmit={handleSubmit}>
+//           <div>
+//             <label className={classes.label}>Username:</label>
+//             <input type="text" name="username" value={formData.username} onChange={handleChange} />
+//           </div>
+//           <div>
+//             <label className={classes.label}>Role:</label>
+//             <input type="text" name="role" value={formData.role} onChange={handleChange} />
+//           </div>
+//           <div>
+//             <label className={classes.label}>Email:</label>
+//             <input type="email" name="email" value={formData.email} onChange={handleChange} />
+//           </div>
+//           <div>
+//             <label className={classes.label}>Alamat:</label>
+//             <input type="text" name="alamat" value={formData.alamat} onChange={handleChange} />
+//           </div>
+//           <div>
+//             <label className={classes.label}>No. HP:</label>
+//             <input type="text" name="no_hp" value={formData.no_hp} onChange={handleChange} />
+//           </div>
+//           <div>
+//             <label className={classes.label}>Gambar:</label>
+//             <input type="file" name="gambar" onChange={handleFileChange} />
+//           </div>
+//           <button type="submit" className={classes.buttonSubmit}>Submit</button>
+//           {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>}
+//         </form>
+//       )}
+//       {isSubmitted && (
+//         <div className={classes.successMessage}>
+//           <p>Data berhasil dikirim!</p>
+//           <button onClick={() => {
+//             setIsFormVisible(true);
+//             setIsSubmitted(false);
+//             handleTutup();
+//           }}>Tambah Admin Lagi</button>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+// export default FormAdmin;
+

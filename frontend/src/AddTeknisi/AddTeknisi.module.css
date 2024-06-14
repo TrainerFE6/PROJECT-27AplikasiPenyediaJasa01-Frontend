@@ -11,7 +11,7 @@ input {
   border: 1px solid gray;
 }
 
-.inputLayanan {
+.inputTeknisi {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -86,7 +86,7 @@ th, td {
   color: white;
 }
 
-.data-image-layanan img{
+.data-image-teknisi img{
   width: 50px;
   height: 50px;
 }

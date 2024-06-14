@@ -88,7 +88,7 @@ const TambahUser = () => {
         </div>
       )}
 
-      <table>
+      <table className={classes.table}>
         <thead>
           <tr>
             <th>ID</th>
@@ -121,6 +121,12 @@ const TambahUser = () => {
               <td>{user.no_hp}</td>
               <td>
                 <button
+                  onClick={() => handleShowDetails(user.id_user)}
+                  className={classes.buttonShow}
+                >
+                  Details
+                </button>
+                <button
                   onClick={() => handleEditUser(user.id_user)}
                   className={classes.buttonEdit}
                 >
@@ -131,12 +137,6 @@ const TambahUser = () => {
                   className={classes.buttonDanger}
                 >
                   Hapus
-                </button>
-                <button
-                  onClick={() => handleShowDetails(user.id_user)}
-                  className={classes.buttonDetails}
-                >
-                  Details
                 </button>
               </td>
             </tr>

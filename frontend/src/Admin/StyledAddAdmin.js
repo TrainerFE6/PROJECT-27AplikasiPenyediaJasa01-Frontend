@@ -54,7 +54,7 @@ export const SidebarLinkStyled = styled(Link)`
   }
 `;
 
-export const StyledTambahTeknisi = styled.div`
+export const StyledTambahAdmin = styled.div`
   padding: 20px;
 `;
 
@@ -68,7 +68,7 @@ export const Table = styled.table`
   }
 
   th {
-    background-color: #f2f2f2;
+    background-color: #3EB492;
     text-align: left;
   }
 `;
