@@ -2,10 +2,11 @@
 let mysql = require('mysql');
 //konfigurasi untuk koneksi database MySql
 let connection = mysql.createConnection({
- host: 'localhost',
- user: 'root',
- password: '',
- database: 'service-provider'
+ host: 'educalab.id',
+ user: 'PVs539vwtNMt7Ncb',
+ password: 'qfJ6wzIyecQBWPMN',
+ database: 'YsSqE2MU7M9rlns5',
+ port: 3307
 });
 //Kondisi untuk mengecek database berjalan atau tidak
 connection.connect(function(error){
