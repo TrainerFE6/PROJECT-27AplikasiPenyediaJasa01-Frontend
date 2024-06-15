@@ -136,7 +136,7 @@ const FormAdmin = ({ newAdmin, setNewAdmin, handleTutup }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append('username', formData.username);
+    data.append('username', formData.username); 
     data.append('email', formData.email);
     data.append('alamat', formData.alamat);
     data.append('no_hp', formData.no_hp);
@@ -205,7 +205,7 @@ const FormAdmin = ({ newAdmin, setNewAdmin, handleTutup }) => {
             <option value="{formData.role}">{formData.role}</option>
             <option value="Admin">Admin</option>
             <option value="Superadmin">Superadmin</option>
-          </select>
+            </select>
           </div>
           <div>
             <label className={classes.label}>Gambar:</label>
