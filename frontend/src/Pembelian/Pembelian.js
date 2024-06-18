@@ -1,32 +1,21 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useLocation} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 import './Pembelian.css';
 
 const FormPembelian = () => {
-  // const [jenisLayanan, setJenisLayanan] = useState('');
-  // const [tanggal, setTanggal] = useState('');
-  // const [nama, setNama] = useState('');
-  // const [nomorTelepon, setNomorTelepon] = useState('');
-  // const [totalHarga, setTotalHarga] = useState('');
-  // const [status, setStatus] = useState('');
   const [paymentMode, setPaymentMode] = useState('transfer');
   const [transferImage, setTransferImage] = useState(null);
-
-  // const [admins, setAdmins] = useState([]);
-  // const [users, setUsers] = useState([]);
-  // const [teknisi, setTeknisi] = useState([]);
-  // const [kategori, setKategori] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const { id_katagori, price, title } = location.state || {};
 
   const id_user = localStorage.getItem("id_user");
-
 
   const [orderData, setOrderData] = useState({
     id_admin: '',
@@ -39,25 +28,6 @@ const FormPembelian = () => {
     opsi_pembayaran: paymentMode,
     status: 'diproses'
   });
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const adminResponse = await axios.get('http://localhost:5000/admin');
-  //       const userResponse = await axios.get('http://localhost:5000/users');
-  //       const teknisiResponse = await axios.get('http://localhost:5000/teknisi');
-  //       const kategoriResponse = await axios.get('http://localhost:5000/kategori');
-  //       setAdmins(adminResponse.data.data);
-  //       setUsers(userResponse.data.data);
-  //       setTeknisi(teknisiResponse.data.data);
-  //       setKategori(kategoriResponse.data.data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   const handleModeChange = (mode) => {
     setPaymentMode(mode);
@@ -106,8 +76,8 @@ const FormPembelian = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log('Response dari server:', response.data);
-      alert('Pembelian Anda Berhasil!');
+      // Show the modal on successful submission
+      setShowModal(true);
     } catch (error) {
       console.error('Terjadi kesalahan saat menambahkan data:', error);
       if (error.response) {
@@ -118,6 +88,11 @@ const FormPembelian = () => {
     }
   };
 
+  const handleClose = () => {
+    setShowModal(false);
+    navigate('/catalog');
+  };
+
   return (
     <Container className='mt-5'>
       <Row className="justify-content-center">
@@ -126,38 +101,14 @@ const FormPembelian = () => {
           <h3>{title}</h3>
           <Form onSubmit={handleSubmit}>
 
-          <Form.Group>
+            <Form.Group>
               <Form.Label>ID User:</Form.Label>
               <Form.Control type="number" name="id_user" value={orderData.id_user} onChange={handleChange} readOnly />
-          </Form.Group>
-          <Form.Group>
+            </Form.Group>
+            <Form.Group>
               <Form.Label>ID Kategori:</Form.Label>
               <Form.Control type="number" name="id_katagori" value={orderData.id_katagori} onChange={handleChange} readOnly />
-          </Form.Group>
-            
-            {/* <Form.Group>
-              <Form.Label>ID User:</Form.Label>
-              <Form.Control as="select" name="id_user" value={orderData.id_user} onChange={handleChange} required>
-                <option value="">Pilih User</option>
-                {users.map(user => (
-                  <option key={user.id_user} value={user.id_user}>
-                    {user.username}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group> */}
-            
-            {/* <Form.Group>
-              <Form.Label>ID Kategori:</Form.Label>
-              <Form.Control as="select" name="id_katagori" value={orderData.id_katagori} onChange={handleChange} required>
-                <option value="">Pilih Kategori</option>
-                {kategori.map(cat => (
-                  <option key={cat.id_katagori} value={cat.id_katagori}>
-                    {cat.nama_katagori}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group> */}
+            </Form.Group>
 
             <Form.Group>
               <Form.Label>Tanggal Bayar:</Form.Label>
@@ -193,6 +144,20 @@ const FormPembelian = () => {
           </Form>
         </Col>
       </Row>
+
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Success</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Pembelian Anda Berhasil!
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
