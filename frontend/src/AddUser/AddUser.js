@@ -20,7 +20,7 @@ const TambahUser = () => {
 
   useEffect(() => {
     axios
-      .get("api-msib-6-penyedia-jasa-02.educalab.id/users")
+      .get("http://localhost:5000/users")
       .then((response) => {
         setDataUser(response.data.data || []);
       })
@@ -47,7 +47,7 @@ const TambahUser = () => {
 
   const deleteUser = (id) => {
     axios
-      .delete(`api-msib-6-penyedia-jasa-02.educalab.id/users/${id}`)
+      .delete(`http://localhost:5000/users/${id}`)
       .then((response) => {
         setDataUser(dataUser.filter((user) => user.id_user !== id));
       })
@@ -110,7 +110,7 @@ const TambahUser = () => {
                 {user.gambar ? (
                   <img
                     style={{ width: "50px", height: "50px" }}
-                    src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/users/${user.gambar}`}
+                    src={`http://localhost:5000/uploads/users/${user.gambar}`}
                     alt="Gambar User"
                   />
                 ) : (
@@ -171,7 +171,7 @@ const TambahUser = () => {
                   {user.gambar ? (
                     <img
                       style={{ width: "100px", height: "100px" }}
-                      src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/users/${user.gambar}`}
+                      src={`http://localhost:5000/uploads/users/${user.gambar}`}
                       alt="Gambar User"
                     />
                   ) : (

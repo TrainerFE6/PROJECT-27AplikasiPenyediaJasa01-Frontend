@@ -149,14 +149,14 @@ const FormAdmin = ({ newAdmin, setNewAdmin, handleTutup }) => {
       let response;
       if (newAdmin.id_admin) {
         // Update existing admin
-        response = await axios.put(`api-msib-6-penyedia-jasa-02.educalab.id/admin/${newAdmin.id_admin}`, data, {
+        response = await axios.put(`http://localhost:5000/admin/${newAdmin.id_admin}`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
       } else {
         // Create new admin
-        response = await axios.post('http:/api-msib-6-penyedia-jasa-02.educalab.id/admin', data, {
+        response = await axios.post('http://localhost:5000/admin', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

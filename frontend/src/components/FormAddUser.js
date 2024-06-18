@@ -50,12 +50,12 @@ const FormUser = ({ newUser, setNewUser }) => {
 
     try {
       const response = formData.id_user
-        ? await axios.put(`api-msib-6-penyedia-jasa-02.educalab.id/users/${formData.id_user}`, data, {
+        ? await axios.put(`http://localhost:5000/users/${formData.id_user}`, data, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           })
-        : await axios.post('api-msib-6-penyedia-jasa-02.educalab.id/users', data, {
+        : await axios.post('http://localhost:5000/users', data, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -93,7 +93,7 @@ const FormUser = ({ newUser, setNewUser }) => {
             {formData.gambarURL && !formData.gambar && (
               <div>
                 <img
-                  src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/user/${formData.gambarURL}`}
+                  src={`http://localhost:5000/uploads/user/${formData.gambarURL}`}
                   alt="Gambar User"
                   style={{ width: '100px', height: '100px', marginTop: '10px' }}
                 />

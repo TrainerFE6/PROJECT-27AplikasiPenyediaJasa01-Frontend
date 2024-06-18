@@ -106,7 +106,7 @@ const TambahLayanan = () => {
               <td>
                 <img
                   style={{ width: "50px", height: "50px" }}
-                  src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/catagori/${layanan.gambar}`}
+                  src={`http://localhost:5000/uploads/catagori/${layanan.gambar}`}
                   alt="Gambar Layanan"
                 />
               </td>

@@ -21,7 +21,7 @@ const TambahAdmin = () => {
 
   useEffect(() => {
     axios
-      .get("api-msib-6-penyedia-jasa-02.educalab.id/admin")
+      .get("http://localhost:5000/admin")
       .then((response) => {
         setDataAdmin(response.data.data || []);
       })
@@ -48,7 +48,7 @@ const TambahAdmin = () => {
 
   const deleteAdmin = (id) => {
     axios
-      .delete(`api-msib-6-penyedia-jasa-02.educalab.id/admin/${id}`)
+      .delete(`http://localhost:5000/admin/${id}`)
       .then((response) => {
         setDataAdmin(
           dataAdmin.filter((admin) => admin.id_admin !== id)
