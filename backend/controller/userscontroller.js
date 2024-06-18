@@ -120,10 +120,9 @@ const updateusers = function (req, res) {
   let username = req.body.username;
   let email = req.body.email;
   let password = req.body.password;
-  let gambar = req.file ? req.file.filename : req.body.gambar;
+  let gambarBaru = req.file ? req.file.filename : null;
   let alamat = req.body.alamat;
   let no_hp = req.body.no_hp;
-
   let errors = false;
 
   if (!username) {
@@ -147,13 +146,6 @@ const updateusers = function (req, res) {
     });
   }
 
-  if (!password) {
-    errors = true;
-    res.json({
-      pesan: "Field status belum diisi, Field harus diisi dengan lengkap",
-    });
-  }
-
   if (!alamat) {
     errors = true;
     res.json({
@@ -169,39 +161,47 @@ const updateusers = function (req, res) {
   }
 
   // if no error
-  if (!errors) {
-    let formData = {
-      username: username,
-      email: email,
-      password: password,
-      gambar: gambar,
-      alamat: alamat,
-      no_hp: no_hp,
-    };
+ 
     // update query
 
-    connection.query(
-      "UPDATE tbl_users SET ? WHERE id_user = " + id,
-      formData,
-      function (err, result) {
-        //if(err) throw err
-        if (err) {
-          res.send("error", err);
-          res.json({
-            id_user: req.params.id_user,
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-            gambar: formData.gambar,
-            alamat: formData.alamat,
-            no_hp: formData.no_hp,
-          });
-        } else {
-          res.send("Data Berhasil Diupdate!");
-        }
+    connection.query('SELECT gambar FROM tbl_users WHERE id_user = ?', [id], function (err, rows) {
+      if (err) {
+          res.send('error', err);
+          return;
       }
-    );
-  }
+
+      let gambarLama = rows.length > 0 ? rows[0].gambar : null;
+
+      if (gambarBaru && gambarLama) {
+          let gambarPath = path.join(__dirname, '../public/uploads/users', gambarLama);
+          fs.unlink(gambarPath, (err) => {
+              if (err) {
+                  console.log('Gagal menghapus gambar lama: ', err);
+              }
+          });
+      }
+
+      let gambar = gambarBaru ? gambarBaru : gambarLama;
+
+      let formData = {
+          username: username,
+          email: email,
+          password: password,
+          gambar: gambar,
+          alamat: alamat,
+          no_hp: no_hp
+      };
+
+      connection.query('UPDATE tbl_users SET ? WHERE id_user = ?', [formData, id], function (err, result) {
+          if (err) {
+              res.send('error', err);
+              return;
+          }
+
+          res.send('Data Berhasil Diupdate!');
+      });
+  });
+
 };
 
 const deleteusers = function (req, res) {
