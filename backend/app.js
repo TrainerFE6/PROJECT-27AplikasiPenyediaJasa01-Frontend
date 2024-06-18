@@ -14,7 +14,7 @@ var orderRouter = require('./routes/order');
 var catagoriRouter = require('./routes/catagori');
 
 var app = express();
-const PORT = process.env.PORT || 8080; // Mendefinisikan PORT
+const PORT = process.env.PORT || 3307; // Mendefinisikan PORT
 
 // Middleware CORS untuk mengizinkan permintaan dari domain lain
 app.use(cors({
