@@ -19,7 +19,7 @@ const TambahTeknisi = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/teknisi")
+      .get("api-msib-6-penyedia-jasa-02.educalab.id/teknisi")
       .then((response) => {
         setDataTeknisi(response.data.data || []);
       })
