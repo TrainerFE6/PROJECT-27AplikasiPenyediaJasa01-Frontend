@@ -17,7 +17,7 @@ const CatalogProduct = () => {
 
 
   useEffect(() => {
-    axios.get('http://localhost:5000/kategori')
+    axios.get('api-msib-6-penyedia-jasa-02.educalab.id/kategori')
       .then(response => {
         setDataLayanan(response.data.data);
       })
@@ -41,7 +41,7 @@ const CatalogProduct = () => {
     );
   });
 
-  const baseURL = 'http://localhost:5000';
+  const baseURL = 'api-msib-6-penyedia-jasa-02.educalab.id';
 
   return (
     <>

@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const profileImage =
     user && user.gambar
-      ? `http://localhost:5000/uploads/${user.gambar}`
+      ? `api-msib-6-penyedia-jasa-02.educalab.id/uploads/${user.gambar}`
       : jasaku;
 
 //   const handleLogout = () => {

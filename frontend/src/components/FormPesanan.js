@@ -23,8 +23,8 @@ const FormPesanan = ({ order, onClose }) => {
     const fetchData = async () => {
       try {
         const [adminsRes, techniciansRes] = await Promise.all([
-          axios.get('http://localhost:5000/admin'),
-          axios.get('http://localhost:5000/teknisi')
+          axios.get('api-msib-6-penyedia-jasa-02.educalab.id/admin'),
+          axios.get('api-msib-6-penyedia-jasa-02.educalab.id/teknisi')
         ]);
         setAdmins(adminsRes.data.data);
         setTechnicians(techniciansRes.data.data);
@@ -78,7 +78,7 @@ const FormPesanan = ({ order, onClose }) => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:5000/order/${formData.id_pesanan}`, data, {
+      const response = await axios.put(`api-msib-6-penyedia-jasa-02.educalab.id/order/${formData.id_pesanan}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }

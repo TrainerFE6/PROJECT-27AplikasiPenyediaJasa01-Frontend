@@ -18,7 +18,7 @@ function UserProfile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/users');
+        const response = await axios.get('api-msib-6-penyedia-jasa-02.educalab.id/users');
         const data = response.data.data;
 
         // Filter data based on id_user

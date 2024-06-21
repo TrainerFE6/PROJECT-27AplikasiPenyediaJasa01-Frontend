@@ -71,7 +71,7 @@ const FormPembelian = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/order', formData, {
+      const response = await axios.post('api-msib-6-penyedia-jasa-02.educalab.id/order', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

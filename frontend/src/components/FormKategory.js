@@ -60,14 +60,14 @@ const FormKategory = ({ newLayanan, setNewLayanan, handleTutup }) => {
       let response;
       if (newLayanan.id_katagori) {
         // Update existing layanan
-        response = await axios.put(`http://localhost:5000/kategori/${newLayanan.id_katagori}`, data, {
+        response = await axios.put(`api-msib-6-penyedia-jasa-02.educalab.id/kategori/${newLayanan.id_katagori}`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
       } else {
         // Create new layanan
-        response = await axios.post('http://localhost:5000/kategori', data, {
+        response = await axios.post('api-msib-6-penyedia-jasa-02.educalab.id/kategori', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -109,7 +109,7 @@ const FormKategory = ({ newLayanan, setNewLayanan, handleTutup }) => {
             <input type="file" name="gambar" onChange={handleFileChange} />
             {newLayanan.gambar && !formData.gambar && (
               <div className={classes.imagePreview}>
-                <img src={`http://localhost:5000/uploads/catagori/${newLayanan.gambar}`} 
+                <img src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/catagori/${newLayanan.gambar}`} 
                  alt="Gambar kategori"
                   style={{ width: '100px', height: '100px', marginTop: '10px' }} />
               </div>

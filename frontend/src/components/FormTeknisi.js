@@ -48,12 +48,12 @@ const FormTeknisi = ({ newTeknisi, setNewTeknisi }) => {
 
     try {
       const response = formData.id_teknisi
-        ? await axios.put(`http://localhost:5000/teknisi/${formData.id_teknisi}`, data, {
+        ? await axios.put(`api-msib-6-penyedia-jasa-02.educalab.id/teknisi/${formData.id_teknisi}`, data, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           })
-        : await axios.post('http://localhost:5000/teknisi', data, {
+        : await axios.post('api-msib-6-penyedia-jasa-02.educalab.id/teknisi', data, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -91,7 +91,7 @@ const FormTeknisi = ({ newTeknisi, setNewTeknisi }) => {
             {formData.gambarURL && !formData.gambar && (
               <div>
                 <img
-                  src={`http://localhost:5000/uploads/technician/${formData.gambarURL}`}
+                  src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/technician/${formData.gambarURL}`}
                   alt="Gambar Teknisi"
                   style={{ width: '100px', height: '100px', marginTop: '10px' }}
                 />

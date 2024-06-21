@@ -30,10 +30,10 @@ const Pesanan = () => {
       });
   };
   useEffect(() => {
-    fetchData("http://localhost:5000/order", setDataPesanan);
-    fetchData("http://localhost:5000/admin", setDataAdmin);
-    fetchData("http://localhost:5000/users", setDataUser);
-    fetchData("http://localhost:5000/teknisi", setDataTeknisi);
+    fetchData("api-msib-6-penyedia-jasa-02.educalab.id/order", setDataPesanan);
+    fetchData("api-msib-6-penyedia-jasa-02.educalab.id/admin", setDataAdmin);
+    fetchData("api-msib-6-penyedia-jasa-02.educalab.id/users", setDataUser);
+    fetchData("api-msib-6-penyedia-jasa-02.educalab.id/teknisi", setDataTeknisi);
   }, []);
 
   // Menemukan Nama Admin, Nama User, dan Nama Teknisi
@@ -70,7 +70,7 @@ const Pesanan = () => {
 
   const handleDeletePesanan = (id_pesanan) => {
     axios
-      .delete(`http://localhost:5000/order/${id_pesanan}`)
+      .delete(`api-msib-6-penyedia-jasa-02.educalab.id/order/${id_pesanan}`)
       .then((response) => {
         console.log("Order deleted:", response.data);
         setDataPesanan((prevData) =>
