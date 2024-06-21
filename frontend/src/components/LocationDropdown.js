@@ -7,7 +7,7 @@ function LocationDropdown({ onSelect }) {
 
   useEffect(() => {
     // Mengambil data lokasi dari API
-    axios.get('api-msib-6-penyedia-jasa-02.educalab.id/kategori') // Gantilah URL ini sesuai dengan endpoint API lokasi Anda
+    axios.get('https://api-msib-6-penyedia-jasa-02.educalab.id/kategori') // Gantilah URL ini sesuai dengan endpoint API lokasi Anda
       .then(response => {
         // Mengubah data API menjadi format yang sesuai untuk Dropdown dan menghapus duplikasi
         const uniqueLocations = Array.from(new Set(response.data.data.map(item => item.lokasi)));

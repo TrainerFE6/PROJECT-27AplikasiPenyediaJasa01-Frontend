@@ -68,14 +68,14 @@ const FormAdmin = ({ newAdmin, setNewAdmin, handleTutup }) => {
       let response;
       if (newAdmin.id_admin) {
         // Update existing admin
-        response = await axios.put(`api-msib-6-penyedia-jasa-02.educalab.id/admin/${newAdmin.id_admin}`, data, {
+        response = await axios.put(`https://api-msib-6-penyedia-jasa-02.educalab.id/admin/${newAdmin.id_admin}`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
       } else {
         // Create new admin
-        response = await axios.post('api-msib-6-penyedia-jasa-02.educalab.id/admin', data, {
+        response = await axios.post('https://api-msib-6-penyedia-jasa-02.educalab.id/admin', data, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -130,7 +130,7 @@ const FormAdmin = ({ newAdmin, setNewAdmin, handleTutup }) => {
             <input type="file" name="gambar" onChange={handleFileChange} />
             {newAdmin.gambar && !formData.gambar && (
               <div className={classes.imagePreview}>
-                <img src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/admin/${newAdmin.gambar}`} 
+                <img src={`https://api-msib-6-penyedia-jasa-02.educalab.id/uploads/admin/${newAdmin.gambar}`} 
                  alt="Gambar admin"
                   style={{ width: '100px', height: '100px', marginTop: '10px' }} />
               </div>

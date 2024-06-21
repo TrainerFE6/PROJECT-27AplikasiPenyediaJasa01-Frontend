@@ -19,7 +19,7 @@ const TambahTeknisi = () => {
 
   useEffect(() => {
     axios
-      .get("api-msib-6-penyedia-jasa-02.educalab.id/teknisi")
+      .get("https://api-msib-6-penyedia-jasa-02.educalab.id/teknisi")
       .then((response) => {
         setDataTeknisi(response.data.data || []);
       })
@@ -45,7 +45,7 @@ const TambahTeknisi = () => {
 
   const deleteTeknisi = (id) => {
     axios
-      .delete(`api-msib-6-penyedia-jasa-02.educalab.id/teknisi/${id}`)
+      .delete(`https://api-msib-6-penyedia-jasa-02.educalab.id/teknisi/${id}`)
       .then((response) => {
         setDataTeknisi(
           dataTeknisi.filter((teknisi) => teknisi.id_teknisi !== id)
@@ -66,7 +66,7 @@ const TambahTeknisi = () => {
     }
   };
 
-  const baseURL = 'api-msib-6-penyedia-jasa-02.educalab.id'; // Base URL backend Anda
+  const baseURL = 'https://api-msib-6-penyedia-jasa-02.educalab.id'; // Base URL backend Anda
   const handleShowDetails = (id) => setShowDetails(id);
 
   const handleCloseDetails = () => setShowDetails(null);

@@ -18,7 +18,7 @@ const TambahLayanan = () => {
 
   useEffect(() => {
     axios
-      .get("api-msib-6-penyedia-jasa-02.educalab.id/kategori")
+      .get("https://api-msib-6-penyedia-jasa-02.educalab.id/kategori")
       .then((response) => {
         setDataLayanan(response.data.data || []);
       })
@@ -43,7 +43,7 @@ const TambahLayanan = () => {
 
   const deleteLayanan = (id) => {
     axios
-      .delete(`api-msib-6-penyedia-jasa-02.educalab.id/kategori/${id}`)
+      .delete(`https://api-msib-6-penyedia-jasa-02.educalab.id/kategori/${id}`)
       .then((response) => {
         setDataLayanan(
           dataLayanan.filter((layanan) => layanan.id_katagori !== id)
@@ -106,7 +106,7 @@ const TambahLayanan = () => {
               <td>
                 <img
                   style={{ width: "50px", height: "50px" }}
-                  src={`api-msib-6-penyedia-jasa-02.educalab.id/uploads/catagori/${layanan.gambar}`}
+                  src={`https://api-msib-6-penyedia-jasa-02.educalab.id/uploads/catagori/${layanan.gambar}`}
                   alt="Gambar Layanan"
                 />
               </td>

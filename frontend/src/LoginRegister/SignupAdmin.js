@@ -22,7 +22,7 @@ function AdminSignUp() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://api-msib-6-penyedia-jasa-02.educalab.id/auth/admin/register', {
+    const response = await fetch('https://api-msib-6-penyedia-jasa-02.educalab.id/auth/admin/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

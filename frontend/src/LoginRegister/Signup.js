@@ -64,7 +64,7 @@ function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://api-msib-6-penyedia-jasa-02.educalab.id/auth/register', {
+      const response = await fetch('https://api-msib-6-penyedia-jasa-02.educalab.id/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

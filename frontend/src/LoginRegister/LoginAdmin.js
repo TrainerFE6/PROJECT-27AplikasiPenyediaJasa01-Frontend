@@ -11,7 +11,7 @@ function AdminLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://api-msib-6-penyedia-jasa-02.educalab.id/auth/admin/login', {
+    const response = await fetch('https://api-msib-6-penyedia-jasa-02.educalab.id/auth/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
