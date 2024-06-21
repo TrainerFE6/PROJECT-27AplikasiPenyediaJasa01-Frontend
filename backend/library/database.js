@@ -1,6 +1,5 @@
 
-let mysql = require('mysql');
-// konfigurasi untuk koneksi database MySql
+let mysql = require('mysql2');
 
 let connection = mysql.createConnection({
      host: 'educalab.id',
@@ -10,7 +9,6 @@ let connection = mysql.createConnection({
      port: 3307
     });
 
-// Kondisi untuk mengecek database berjalan atau tidak
 connection.connect(function(error){
  if(!!error){
  console.log(error);
