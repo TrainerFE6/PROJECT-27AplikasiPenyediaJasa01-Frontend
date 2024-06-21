@@ -1,5 +1,5 @@
 
-let mysql = require('mysql');
+let mysql = require('mysql2');
 // konfigurasi untuk koneksi database MySql
 
 let connection = mysql.createConnection({
