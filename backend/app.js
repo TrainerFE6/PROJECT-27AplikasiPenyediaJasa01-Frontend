@@ -48,8 +48,9 @@ app.use((err, req, res, next) => {
 });
 
 // Mendaftarkan aplikasi Express untuk mendengarkan permintaan pada PORT tertentu
-// app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`);
-// });
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
 module.exports = app;

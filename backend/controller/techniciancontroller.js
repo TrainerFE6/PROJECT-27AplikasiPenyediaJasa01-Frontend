@@ -147,6 +147,7 @@ const updateteknisi = function (req, res) {
         });
     });
 };
+
 const deleteteknisi = function (req, res) {
     let id = req.params.id;
 
