@@ -7,7 +7,7 @@ function CategoryDropdown({ onSelect }) {
 
   useEffect(() => {
     // Mengambil data dari API
-    axios.get('http://localhost:5000/kategori')
+    axios.get('api-msib-6-penyedia-jasa-02.educalab.id/kategori')
       .then(response => {
         // Mengubah data API menjadi format yang sesuai untuk Dropdown dan menghapus duplikasi
         const uniqueCategories = Array.from(new Set(response.data.data.map(item => item.nama_katagori)));

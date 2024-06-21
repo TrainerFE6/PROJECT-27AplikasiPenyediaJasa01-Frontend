@@ -18,7 +18,7 @@ const TambahLayanan = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/kategori")
+      .get("api-msib-6-penyedia-jasa-02.educalab.id/kategori")
       .then((response) => {
         setDataLayanan(response.data.data || []);
       })
@@ -43,7 +43,7 @@ const TambahLayanan = () => {
 
   const deleteLayanan = (id) => {
     axios
-      .delete(`http://localhost:5000/kategori/${id}`)
+      .delete(`api-msib-6-penyedia-jasa-02.educalab.id/kategori/${id}`)
       .then((response) => {
         setDataLayanan(
           dataLayanan.filter((layanan) => layanan.id_katagori !== id)
